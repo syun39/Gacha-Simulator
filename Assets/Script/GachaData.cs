@@ -4,5 +4,5 @@ using UnityEngine;
 public class GachaData : ScriptableObject
 {
     // 取得したテクスチャを保存するための変数
-    public Texture2D[] gachaTextures;
+    [SerializeField] public Texture2D[] gachaTextures;
 }
