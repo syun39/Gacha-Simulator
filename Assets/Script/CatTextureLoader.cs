@@ -1,59 +1,69 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class CatTextureLoader : MonoBehaviour
 {
     // 猫の画像を取得するためのAPI URL
     private string _urlAPI = "https://cataas.com/cat";
 
-    // テクスチャを適用する対象のオブジェクト
-    private GameObject _object;
+    // GachaData ScriptableObject の参照
+    [SerializeField] GachaData _gachaData;
 
-    void Start()
+    // ガチャの回数
+    private int _maxImages = 1;
+
+    // 単発ガチャがクリックされたときに呼び出される
+    public void OnSingleGachaClick()
     {
-        // 画像を貼り付けるオブジェクトをシーンから取得
-        _object = GameObject.Find("Tile");
+        _maxImages = 1; // 単発ガチャは1回だけ
+        StartCoroutine(GetAPI(_maxImages));
     }
 
-    // クリックされたら
-    public void OnPointerClick(PointerEventData eventData)
+    // 10連ガチャがクリックされたときに呼び出される
+    public void OnTenGachaClick()
     {
-        // 猫画像を取得
-        StartCoroutine(GetTexture(_urlAPI));
+        _maxImages = 10; // 10連ガチャは10回
+        StartCoroutine(GetAPI(_maxImages));
     }
 
-    // 指定したURLからテクスチャを取得
-    IEnumerator GetTexture(string url)
+    // 指定された回数（count）の猫画像を取得し、GachaData に保存する
+    IEnumerator GetAPI(int count)
     {
-        UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
+        // GachaData 内のテクスチャ配列を初期化
+        _gachaData.gachaTextures = new Texture2D[count];
 
-        // リクエストの送信と待機
-        yield return request.SendWebRequest();
-
-        switch (request.result)
+        for (int i = 0; i < count; i++)
         {
-            // リクエストが進行中の場合
-            case UnityWebRequest.Result.InProgress:
-                Debug.Log("リクエスト中");
-                break;
+            UnityWebRequest request = UnityWebRequestTexture.GetTexture(_urlAPI);
 
-            // リクエストが成功した場合
-            case UnityWebRequest.Result.Success:
-                Debug.Log("リクエスト成功");
+            // リクエストの送信と待機
+            yield return request.SendWebRequest();
 
-                // テクスチャを取得
-                Texture loadedTexture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                Texture2D texture = DownloadHandlerTexture.GetContent(request);
 
-                // 取得したテクスチャをオブジェクトに適用
-                _object.GetComponent<MeshRenderer>().material.SetTexture("_MainTex", loadedTexture);
-                break;
+                // Editor 内でのみ画像のサイズをログ出力
+#if UNITY_EDITOR
+                Debug.Log($"Image Width: {texture.width}");
+                Debug.Log($"Image Height: {texture.height}");
+#endif
 
-            // インターネット接続の問題によるエラー
-            case UnityWebRequest.Result.ConnectionError: 
+                // 取得したテクスチャを GachaData に保存
+                _gachaData.gachaTextures[i] = DownloadHandlerTexture.GetContent(request);
+            }
+            else
+            {
                 Debug.LogError($"リクエスト失敗: {request.error}");
-                break;
+            }
         }
+
+        // ガチャ結果の取得が完了
+        Debug.Log("ガチャ結果の取得が完了しました");
+
+        // ガチャが終わったらシーン遷移
+        SceneManager.LoadScene("Gacha Main Scene"); // 画像表示シーンに遷移
     }
 }

@@ -49,6 +49,9 @@ public class DogTextureLoader : MonoBehaviour
             }
         }
 
+        // ガチャ結果の取得が完了
+        Debug.Log("ガチャ結果の取得が完了しました");
+
         // ガチャが終わったらシーン遷移
         SceneManager.LoadScene("Gacha Main Scene"); // 画像表示シーンに遷移
     }

@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 115288593}
   - component: {fileID: 115288592}
   m_Layer: 0
-  m_Name: GachaManager
+  m_Name: Dog Gacha Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff8e177fd748119489de83f744bd29ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gachaData: {fileID: 0}
+  _gachaData: {fileID: 11400000, guid: e91533e7eb2129f4ebe8cf42f63a4292, type: 2}
 --- !u!4 &115288593
 Transform:
   m_ObjectHideFlags: 0
@@ -514,8 +514,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 115288592}
-        m_TargetAssemblyTypeName: DogTextureLoader, Assembly-CSharp
+      - m_Target: {fileID: 643527586}
+        m_TargetAssemblyTypeName: CatTextureLoader, Assembly-CSharp
         m_MethodName: OnSingleGachaClick
         m_Mode: 1
         m_Arguments:
@@ -643,6 +643,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 572733161}
   m_CullTransparentMesh: 1
+--- !u!1 &643527585
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 643527587}
+  - component: {fileID: 643527586}
+  m_Layer: 0
+  m_Name: Cat Gacha Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &643527586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 643527585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4185e6dbc4abba9479bdb46370093f40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gachaData: {fileID: 11400000, guid: e91533e7eb2129f4ebe8cf42f63a4292, type: 2}
+--- !u!4 &643527587
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 643527585}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1018.76465, y: 594.74646, z: -7.4592395}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &704369781
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,8 +850,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 115288592}
-        m_TargetAssemblyTypeName: DogTextureLoader, Assembly-CSharp
+      - m_Target: {fileID: 643527586}
+        m_TargetAssemblyTypeName: CatTextureLoader, Assembly-CSharp
         m_MethodName: OnTenGachaClick
         m_Mode: 1
         m_Arguments:
@@ -2187,4 +2232,5 @@ SceneRoots:
   - {fileID: 239284376}
   - {fileID: 1523025493}
   - {fileID: 115288593}
+  - {fileID: 643527587}
   - {fileID: 1878987973}
