@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gachaData: {fileID: 11400000, guid: e91533e7eb2129f4ebe8cf42f63a4292, type: 2}
+  _gachaSetting: {fileID: 11400000, guid: 84d0ad85d9f46624fb2cea574c3d5d7c, type: 2}
 --- !u!4 &115288593
 Transform:
   m_ObjectHideFlags: 0
@@ -467,7 +468,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 145, y: 50}
+  m_AnchoredPosition: {x: 145, y: 95}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &560537914
@@ -673,6 +674,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gachaData: {fileID: 11400000, guid: e91533e7eb2129f4ebe8cf42f63a4292, type: 2}
+  _gachaSetting: {fileID: 11400000, guid: 84d0ad85d9f46624fb2cea574c3d5d7c, type: 2}
 --- !u!4 &643527587
 Transform:
   m_ObjectHideFlags: 0
@@ -803,7 +805,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -145, y: 50}
+  m_AnchoredPosition: {x: -145, y: 95}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &905144149
@@ -1292,7 +1294,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 145, y: 50}
+  m_AnchoredPosition: {x: 145, y: 95}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1352199512
@@ -1425,7 +1427,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -145, y: 50}
+  m_AnchoredPosition: {x: -145, y: 95}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1363664617
@@ -2049,6 +2051,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dogGachaCanvas: {fileID: 917236258}
   _catGachaCanvas: {fileID: 239284372}
+  _specialCanvas: {fileID: 0}
 --- !u!4 &1878987973
 Transform:
   m_ObjectHideFlags: 0

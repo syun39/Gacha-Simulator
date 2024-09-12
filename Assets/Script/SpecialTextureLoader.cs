@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-public class DogTextureLoader : MonoBehaviour
+public class SpecialTextureLoader : MonoBehaviour
 {
     // JSON から受信するデータ
     [Serializable]
     public class ResponseData
     {
-        public string message;
+        public string url;
     }
 
     [SerializeField] private GachaData _gachaData;
@@ -43,14 +43,14 @@ public class DogTextureLoader : MonoBehaviour
             Rarity selectedRarity = GetRandomRarity();
             Debug.Log($"排出されたレア度: {selectedRarity}");
 
-            UnityWebRequest request = UnityWebRequest.Get("https://dog.ceo/api/breeds/image/random");
+            UnityWebRequest request = UnityWebRequest.Get("https://nekos.best/api/v2/waifu");
             yield return request.SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.Success)
             {
                 string jsonResponse = request.downloadHandler.text;
                 ResponseData response = JsonUtility.FromJson<ResponseData>(jsonResponse);
-                yield return StartCoroutine(GetTexture(response.message, i, selectedRarity));
+                yield return StartCoroutine(GetTexture(response.url, i, selectedRarity));
             }
             else
             {
@@ -62,7 +62,7 @@ public class DogTextureLoader : MonoBehaviour
         Debug.Log("ガチャ結果の取得が完了しました");
 
         // ガチャが終わったらシーン遷移
-        SceneManager.LoadScene("Cat Dog Gacha Main Scene"); // 画像表示シーンに遷移
+        SceneManager.LoadScene("Gacha Main Scene"); // 画像表示シーンに遷移
     }
 
     // テクスチャを取得して GachaData に保存

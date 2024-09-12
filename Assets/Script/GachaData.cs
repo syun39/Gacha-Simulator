@@ -1,8 +1,18 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "GachaData", menuName = "Gacha/GachaData")]
 public class GachaData : ScriptableObject
 {
-    // 取得したテクスチャを保存するための変数
-    [SerializeField] public Texture2D[] gachaTextures;
+    // 画像とレア度をセットで保存するための構造体
+    [Serializable]
+    public class GachaResult
+    {
+        public Texture2D texture; // 画像
+        public Rarity rarity;     // レア度
+    }
+
+    // ガチャ結果の配列
+    public GachaResult[] gachaResults;
 }
+
