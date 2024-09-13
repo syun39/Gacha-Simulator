@@ -35,7 +35,7 @@ public class GachaResultDisplay : MonoBehaviour
             else
             {
                 // 全ての画像を表示し終わったらシーン遷移
-                SceneManager.LoadScene("Gacha Result Scene"); // 最終結果を表示するシーンに遷移
+                SceneManager.LoadScene("Gacha Select Scene"); 
             }
         }
     }

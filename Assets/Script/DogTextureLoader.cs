@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class DogTextureLoader : MonoBehaviour
 {
@@ -15,13 +16,21 @@ public class DogTextureLoader : MonoBehaviour
 
     [SerializeField] private GachaData _gachaData;
     [SerializeField] private GachaSetting _gachaSetting; // レア度設定
+    [SerializeField] Text _loadingText; // ローディングテキストの追加
+
     private int _maxImages = 1;
+
+    private void Start()
+    {
+        _loadingText.gameObject.SetActive(false);
+    }
 
     // 単発ガチャがクリックされたときに呼び出される
     public void OnSingleGachaClick()
     {
         _maxImages = 1; // 単発ガチャ
         StartCoroutine(GetAPI(_maxImages));
+        _loadingText.gameObject.SetActive(true); // ローディングテキストを表示
     }
 
     // 10連ガチャがクリックされたときに呼び出される
@@ -29,6 +38,7 @@ public class DogTextureLoader : MonoBehaviour
     {
         _maxImages = 10; // 10連ガチャ
         StartCoroutine(GetAPI(_maxImages));
+        _loadingText.gameObject.SetActive(true); // ローディングテキストを表示
     }
 
     // APIを使って画像を取得し、レア度と一緒にGachaDataに保存
@@ -51,10 +61,19 @@ public class DogTextureLoader : MonoBehaviour
                 string jsonResponse = request.downloadHandler.text;
                 ResponseData response = JsonUtility.FromJson<ResponseData>(jsonResponse);
                 yield return StartCoroutine(GetTexture(response.message, i, selectedRarity));
+
+                // ...成功時の処理...
+                if (i == count - 1) // 最後の画像のロードが完了した場合
+                {
+                    _loadingText.gameObject.SetActive(false); // ローディングテキストを非表示に
+                }
             }
             else
             {
                 Debug.LogError($"画像取得失敗: {request.error}");
+
+                // ...失敗時の処理...
+                _loadingText.text = "ロード失敗"; // エラーメッセージに更新
             }
         }
 
@@ -62,7 +81,7 @@ public class DogTextureLoader : MonoBehaviour
         Debug.Log("ガチャ結果の取得が完了しました");
 
         // ガチャが終わったらシーン遷移
-        SceneManager.LoadScene("Cat Dog Gacha Main Scene"); // 画像表示シーンに遷移
+        SceneManager.LoadScene("Normal direction Scene"); // 画像表示シーンに遷移
     }
 
     // テクスチャを取得して GachaData に保存
