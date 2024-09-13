@@ -9,7 +9,7 @@ public class GachaResultDisplay : MonoBehaviour
 
     // Unity UI の Image と Text コンポーネントへの参照
     [SerializeField] Image _gachaImage;
-    [SerializeField] Text _rarityText; // レア度を表示するためのText
+    [SerializeField] private RarityText _rarityTextComponent; // RarityText スクリプトの参照
 
     private int _currentImageIndex = 0;
 
@@ -52,7 +52,7 @@ public class GachaResultDisplay : MonoBehaviour
         Sprite newSprite = Sprite.Create(result.texture, new Rect(0, 0, result.texture.width, result.texture.height), new Vector2(0.5f, 0.5f));
         _gachaImage.sprite = newSprite;
 
-        // レア度をTextに適用
-        _rarityText.text = result.rarity.ToString();
+        // レア度をRarityText コンポーネントに適用
+        _rarityTextComponent.SetRarity(result.rarity);
     }
 }
