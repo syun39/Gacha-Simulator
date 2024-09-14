@@ -16,8 +16,8 @@ MonoBehaviour:
   - rarity: 0
     rate: 70
   - rarity: 1
-    rate: 26.5
+    rate: 26
   - rarity: 2
     rate: 3
   - rarity: 3
-    rate: 0.5
+    rate: 1

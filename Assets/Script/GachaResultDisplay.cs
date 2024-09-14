@@ -1,9 +1,12 @@
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GachaResultDisplay : MonoBehaviour
 {
+    // Singleton インスタンス
+    public static GachaResultDisplay Instance { get; private set; }
+
     // GachaData ScriptableObject の参照
     [SerializeField] GachaData _gachaData;
 
@@ -22,6 +25,20 @@ public class GachaResultDisplay : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        // Singleton パターンの適用
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject); // 既に存在する場合は自分自身を破棄
+        }
+    }
+
     void Update()
     {
         // エンターキーが押されたら次の画像を表示
@@ -35,7 +52,7 @@ public class GachaResultDisplay : MonoBehaviour
             else
             {
                 // 全ての画像を表示し終わったらシーン遷移
-                SceneManager.LoadScene("Gacha Select Scene"); 
+                EditorApplication.isPlaying = false;
             }
         }
     }
@@ -54,5 +71,12 @@ public class GachaResultDisplay : MonoBehaviour
 
         // レア度をRarityText コンポーネントに適用
         _rarityTextComponent.SetRarity(result.rarity);
+    }
+
+    // GachaResultDisplay をリセットするメソッド
+    public void Reset()
+    {
+        _currentImageIndex = 0;
+        DisplayResult(_currentImageIndex);
     }
 }

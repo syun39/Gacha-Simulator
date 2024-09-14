@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -6,6 +7,9 @@ using UnityEngine.UI;
 
 public class CatTextureLoader : MonoBehaviour
 {
+    // Singleton インスタンス
+    public static CatTextureLoader Instance { get; private set; }
+
     // 猫の画像を取得するためのAPI URL
     private string _urlAPI = "https://cataas.com/cat";
 
@@ -15,15 +19,39 @@ public class CatTextureLoader : MonoBehaviour
     // GachaSetting の参照 (排出率設定)
     [SerializeField] private GachaSetting _gachaSetting;
 
-    [SerializeField] Text  _loadingText; // ローディングテキストの追加
+    [SerializeField] Text _loadingText; // ローディングテキストの追加
+
+    // レア度ごとのシーン名
+    [SerializeField] private string _normalScene = "";
+
+    [SerializeField] private string _oneSSRScene = "";
+
+    [SerializeField] private string _moreSSRScene = "";
+
+    [SerializeField] private string _oneURScene = "";
 
     // ガチャの回数
     private int _maxImages = 1;
 
     private void Start()
     {
-        _loadingText.gameObject.SetActive(false);
+        //_loadingText.gameObject.SetActive(false);
     }
+
+    private void Awake()
+    {
+        // Singleton パターンの適用
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject); // 既に存在する場合は自分自身を破棄
+        }
+    }
+
 
     // 単発ガチャがクリックされたときに呼び出される
     public void OnSingleGachaClick()
@@ -55,7 +83,7 @@ public class CatTextureLoader : MonoBehaviour
             Rarity selectedRarity = GetRandomRarity();
 
 #if UNITY_EDITOR
-            Debug.Log($"排出されたレア度: {selectedRarity}");
+            //Debug.Log($"排出されたレア度: {selectedRarity}");
 #endif
 
             UnityWebRequest request = UnityWebRequestTexture.GetTexture(_urlAPI);
@@ -99,8 +127,39 @@ public class CatTextureLoader : MonoBehaviour
         // ガチャ結果の取得が完了
         Debug.Log("ガチャ結果の取得が完了しました");
 
-        // ガチャが終わったらシーン遷移
-        SceneManager.LoadScene("Normal direction Scene"); // 画像表示シーンに遷移
+        // レア度のカウントを取得
+        int ssrCount = _gachaData.gachaResults.Count(result => result.rarity == Rarity.SSR);
+        int urCount = _gachaData.gachaResults.Count(result => result.rarity == Rarity.UR);
+
+        // 遷移先のシーンを決定
+        string sceneToLoad = RarityChangeScene(ssrCount, urCount);
+        SceneManager.LoadScene(sceneToLoad);
+    }
+
+    /// <summary>
+    /// レア度に応じたシーン名を決定する
+    /// </summary>
+    /// <param name="ssrCount">SSRの枚数</param>
+    /// <param name="urCount">URの枚数</param>
+    /// <returns>シーン名</returns>
+    private string RarityChangeScene(int ssrCount, int urCount)
+    {
+        if (urCount > 0)
+        {
+            return _oneURScene; // URが一枚以上の場合
+        }
+        else if (ssrCount >= 2)
+        {
+            return _moreSSRScene; // SSRが二枚以上の場合
+        }
+        else if (ssrCount == 1)
+        {
+            return _oneSSRScene; // SSRが一枚の場合
+        }
+        else
+        {
+            return _normalScene; // SSRもURもない場合
+        }
     }
 
     /// <summary>

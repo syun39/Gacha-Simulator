@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -7,6 +8,9 @@ using UnityEngine.UI;
 
 public class DogTextureLoader : MonoBehaviour
 {
+    // Singleton インスタンス
+    public static DogTextureLoader Instance { get; private set; }
+
     // JSON から受信するデータ
     [Serializable]
     public class ResponseData
@@ -18,11 +22,34 @@ public class DogTextureLoader : MonoBehaviour
     [SerializeField] private GachaSetting _gachaSetting; // レア度設定
     [SerializeField] Text _loadingText; // ローディングテキストの追加
 
+    // レア度ごとのシーン名
+    [SerializeField] private string _normalScene = "";
+
+    [SerializeField] private string _oneSSRScene = "";
+
+    [SerializeField] private string _moreSSRScene = "";
+
+    [SerializeField] private string _oneURScene = "";
+
     private int _maxImages = 1;
 
     private void Start()
     {
-        _loadingText.gameObject.SetActive(false);
+        //_loadingText.gameObject.SetActive(false);
+    }
+
+    private void Awake()
+    {
+        // Singleton パターンの適用
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject); // 既に存在する場合は自分自身を破棄
+        }
     }
 
     // 単発ガチャがクリックされたときに呼び出される
@@ -51,7 +78,7 @@ public class DogTextureLoader : MonoBehaviour
         {
             // レア度をランダムに決定
             Rarity selectedRarity = GetRandomRarity();
-            Debug.Log($"排出されたレア度: {selectedRarity}");
+            //Debug.Log($"排出されたレア度: {selectedRarity}");
 
             UnityWebRequest request = UnityWebRequest.Get("https://dog.ceo/api/breeds/image/random");
             yield return request.SendWebRequest();
@@ -80,8 +107,13 @@ public class DogTextureLoader : MonoBehaviour
         // ガチャ結果の取得が完了
         Debug.Log("ガチャ結果の取得が完了しました");
 
-        // ガチャが終わったらシーン遷移
-        SceneManager.LoadScene("Normal direction Scene"); // 画像表示シーンに遷移
+        // レア度のカウントを取得
+        int ssrCount = _gachaData.gachaResults.Count(result => result.rarity == Rarity.SSR);
+        int urCount = _gachaData.gachaResults.Count(result => result.rarity == Rarity.UR);
+
+        // 遷移先のシーンを決定
+        string sceneToLoad = RarityChangeScene(ssrCount, urCount);
+        SceneManager.LoadScene(sceneToLoad);
     }
 
     // テクスチャを取得して GachaData に保存
@@ -109,6 +141,32 @@ public class DogTextureLoader : MonoBehaviour
         else
         {
             Debug.LogError($"テクスチャ取得失敗: {request.error}");
+        }
+    }
+
+    /// <summary>
+    /// レア度に応じたシーン名を決定する
+    /// </summary>
+    /// <param name="ssrCount">SSRの枚数</param>
+    /// <param name="urCount">URの枚数</param>
+    /// <returns>シーン名</returns>
+    private string RarityChangeScene(int ssrCount, int urCount)
+    {
+        if (urCount > 0)
+        {
+            return _oneURScene; // URが一枚以上の場合
+        }
+        else if (ssrCount >= 2)
+        {
+            return _moreSSRScene; // SSRが二枚以上の場合
+        }
+        else if (ssrCount == 1)
+        {
+            return _oneSSRScene; // SSRが一枚の場合
+        }
+        else
+        {
+            return _normalScene; // SSRもURもない場合
         }
     }
 
