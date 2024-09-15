@@ -593,7 +593,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1403451281}
-  - component: {fileID: 1403451280}
+  - component: {fileID: 1403451282}
   m_Layer: 0
   m_Name: SceneChange
   m_TagString: Untagged
@@ -601,19 +601,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1403451280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1403451279}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e3bd3ca4e9be1e48bf1c72c3333e7dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _sceneToLoad: Cat Dog Gacha Main Scene
 --- !u!4 &1403451281
 Transform:
   m_ObjectHideFlags: 0
@@ -629,6 +616,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1403451282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1403451279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 895646eb9bb9a9940abebe6fb09d4276, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bgmSource: {fileID: 0}
+  _seSource: {fileID: 0}
+  _panel: {fileID: 0}
+  _image: {fileID: 0}
+  _nextScene: Cat Dog Gacha Main Scene
 --- !u!1 &1666539067
 GameObject:
   m_ObjectHideFlags: 0

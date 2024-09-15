@@ -30,8 +30,11 @@ public class GachaResultDisplay : MonoBehaviour
         // Singleton パターンの適用
         if (Instance == null)
         {
+
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+
+            // ルートオブジェクトに対して DontDestroyOnLoad を適用
+            DontDestroyOnLoad(transform.root.gameObject);
         }
         else
         {

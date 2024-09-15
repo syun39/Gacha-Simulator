@@ -504,11 +504,11 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'R 70%
 
-    SR 26.5%
+    SR 26%
 
     SSR 3%
 
-    UR 0.5%'
+    UR 1%'
 --- !u!222 &215631879
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3371,11 +3371,11 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'R 70%
 
-    SR 26.5%
+    SR 26%
 
     SSR 3%
 
-    UR 0.5%'
+    UR 1%'
 --- !u!222 &1753691349
 CanvasRenderer:
   m_ObjectHideFlags: 0
