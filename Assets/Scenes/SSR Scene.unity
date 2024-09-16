@@ -664,7 +664,8 @@ MonoBehaviour:
   _seSource: {fileID: 0}
   _panel: {fileID: 0}
   _image: {fileID: 0}
-  _nextScene: Cat Dog Gacha Main Scene
+  _mikuRin: {fileID: 0}
+  _nextScene: Gacha Main Scene
 --- !u!1 &1666539067
 GameObject:
   m_ObjectHideFlags: 0

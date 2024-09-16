@@ -14,6 +14,8 @@ public class GachaResultDisplay : MonoBehaviour
     [SerializeField] Image _gachaImage;
     [SerializeField] private RarityText _rarityTextComponent; // RarityText スクリプトの参照
 
+    [SerializeField] Text _currentImageIndexText; // 現在の画像が何枚目か
+
     private int _currentImageIndex = 0;
 
     void Start()
@@ -74,12 +76,8 @@ public class GachaResultDisplay : MonoBehaviour
 
         // レア度をRarityText コンポーネントに適用
         _rarityTextComponent.SetRarity(result.rarity);
-    }
 
-    // GachaResultDisplay をリセットするメソッド
-    public void Reset()
-    {
-        _currentImageIndex = 0;
-        DisplayResult(_currentImageIndex);
+        // 現在の画像が何枚目かを表示
+        _currentImageIndexText.text = $"{_currentImageIndex + 1}";
     }
 }

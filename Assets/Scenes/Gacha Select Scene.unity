@@ -333,10 +333,10 @@ MonoBehaviour:
   _gachaData: {fileID: 11400000, guid: e91533e7eb2129f4ebe8cf42f63a4292, type: 2}
   _gachaSetting: {fileID: 11400000, guid: 84d0ad85d9f46624fb2cea574c3d5d7c, type: 2}
   _loadingText: {fileID: 1731837531}
-  _normalScene: Normal direction Scene
-  _oneSSRScene: SSR direction Scene
-  _moreSSRScene: SSR Two direction Scene
-  _oneURScene: UR direction Scene
+  _normalScene: Normal Scene
+  _oneSSRScene: SSR Scene
+  _moreSSRScene: SSR Two Scene
+  _oneURScene: UR Scene
 --- !u!4 &115288593
 Transform:
   m_ObjectHideFlags: 0
@@ -1328,10 +1328,10 @@ MonoBehaviour:
   _gachaData: {fileID: 11400000, guid: e91533e7eb2129f4ebe8cf42f63a4292, type: 2}
   _gachaSetting: {fileID: 11400000, guid: 84d0ad85d9f46624fb2cea574c3d5d7c, type: 2}
   _loadingText: {fileID: 636222710}
-  _normalScene: Normal direction Scene
-  _oneSSRScene: SSR direction Scene
-  _moreSSRScene: SSR Two direction Scene
-  _oneURScene: UR direction Scene
+  _normalScene: Normal Scene
+  _oneSSRScene: SSR Scene
+  _moreSSRScene: SSR Two Scene
+  _oneURScene: UR Scene
 --- !u!4 &643527587
 Transform:
   m_ObjectHideFlags: 0

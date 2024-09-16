@@ -4,21 +4,23 @@ using UnityEngine.SceneManagement;
 
 public class SceneChange : MonoBehaviour
 {
-    // BGMとSE用のAudioSource
+    [Tooltip("遷移先のシーン名")]
+    [SerializeField] private string _nextScene;
+
+    [Tooltip("BGMのAudioSource"), Header("URシーンのみアタッチ")]
     [SerializeField] private AudioSource _bgmSource = null;
+
+    [Tooltip("SEのAudioSource"), Header("URシーンのみアタッチ")]
     [SerializeField] private AudioSource _seSource = null;
 
-    // SEが鳴ったら表示するパネル
+    [Tooltip("SEが鳴ったら表示するパネル"), Header("URシーンのみアタッチ")]
     [SerializeField] private GameObject _panel = null;
 
-    // SEが鳴ったら表示するイラスト
+    [Tooltip("SEが鳴ったら表示するイラスト"), Header("URシーンのみアタッチ")]
     [SerializeField] private GameObject _image = null;
 
-    [Tooltip("エンターを押されたら表示するイラスト")]
+    [Tooltip("エンターを押されたら表示するイラスト"),Header("SSRTwoシーンのみアタッチ")]
     [SerializeField] private GameObject _mikuRin = null;
-
-    // 遷移先のシーン名
-    [SerializeField] private string _nextScene;
 
     private bool _isPlay = false;
 
@@ -32,14 +34,13 @@ public class SceneChange : MonoBehaviour
     {
         _isPlay = true;
 
-        if (SceneManager.GetActiveScene().name == "UR direction Scene")
+        if (SceneManager.GetActiveScene().name == "UR Scene")
         {
             _panel.SetActive(false);
             _image.SetActive(false);
             _isURScene = true;
         }
-
-        if (SceneManager.GetActiveScene().name == "SSR Two direction Scene")
+        else if (SceneManager.GetActiveScene().name == "SSR Two Scene")
         {
             _mikuRin.SetActive(false);
             _isSSRTwoScene = true;

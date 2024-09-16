@@ -28,8 +28,8 @@ public class GachaSetting : ScriptableObject
     public RarityRate[] rarityRates = new RarityRate[]
     {
         new RarityRate { rarity = Rarity.R, rate = 70f },
-        new RarityRate { rarity = Rarity.SR, rate = 26.5f },
+        new RarityRate { rarity = Rarity.SR, rate = 26f },
         new RarityRate { rarity = Rarity.SSR, rate = 3f },
-        new RarityRate { rarity = Rarity.UR, rate = 0.5f }
+        new RarityRate { rarity = Rarity.UR, rate = 1f }
     };
 }

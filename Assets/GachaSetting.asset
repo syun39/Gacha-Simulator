@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: GachaSetting
   m_EditorClassIdentifier: 
   rarityRates:
-  - rarity: 2
+  - rarity: 0
     rate: 70
   - rarity: 1
     rate: 26
-  - rarity: 3
+  - rarity: 2
     rate: 3
-  - rarity: 0
+  - rarity: 3
     rate: 1
