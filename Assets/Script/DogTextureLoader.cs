@@ -8,9 +8,6 @@ using UnityEngine.UI;
 
 public class DogTextureLoader : MonoBehaviour
 {
-    // Singleton インスタンス
-    public static DogTextureLoader Instance { get; private set; }
-
     // JSON から受信するデータ
     [Serializable]
     public class ResponseData
@@ -33,52 +30,55 @@ public class DogTextureLoader : MonoBehaviour
 
     private int _maxImages = 1;
 
+    private bool _isGachaInProgress = false;
+
     private void Start()
     {
         //_loadingText.gameObject.SetActive(false);
     }
 
-    private void Awake()
-    {
-        // Singleton パターンの適用
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject); // 既に存在する場合は自分自身を破棄
-        }
-    }
-
     // 単発ガチャがクリックされたときに呼び出される
     public void OnSingleGachaClick()
     {
+        if (_isGachaInProgress) return;
+
+        ResetGacha(); // ガチャの状態をリセット
         _maxImages = 1; // 単発ガチャ
         StartCoroutine(GetAPI(_maxImages));
         _loadingText.gameObject.SetActive(true); // ローディングテキストを表示
+        _isGachaInProgress = true;
+
+        // ボタンを無効化する処理（必要に応じて）
+         //_yourButton.interactable = false;
     }
 
     // 10連ガチャがクリックされたときに呼び出される
     public void OnTenGachaClick()
     {
+        if (_isGachaInProgress) return;
+
+        ResetGacha(); // ガチャの状態をリセット
         _maxImages = 10; // 10連ガチャ
         StartCoroutine(GetAPI(_maxImages));
         _loadingText.gameObject.SetActive(true); // ローディングテキストを表示
+        _isGachaInProgress = true;
+
+        // ボタンを無効化する処理（必要に応じて）
+        // _yourButton.interactable = false;
     }
 
     // APIを使って画像を取得し、レア度と一緒にGachaDataに保存
     IEnumerator GetAPI(int count)
     {
-        // ガチャ結果の配列を初期化
+        _loadingText.gameObject.SetActive(true); // ローディングテキストを表示
+
+        // GachaData 内の結果配列を初期化
         _gachaData.gachaResults = new GachaData.GachaResult[count];
 
         for (int i = 0; i < count; i++)
         {
             // レア度をランダムに決定
             Rarity selectedRarity = GetRandomRarity();
-            //Debug.Log($"排出されたレア度: {selectedRarity}");
 
             UnityWebRequest request = UnityWebRequest.Get("https://dog.ceo/api/breeds/image/random");
             yield return request.SendWebRequest();
@@ -89,17 +89,19 @@ public class DogTextureLoader : MonoBehaviour
                 ResponseData response = JsonUtility.FromJson<ResponseData>(jsonResponse);
                 yield return StartCoroutine(GetTexture(response.message, i, selectedRarity));
 
-                // ...成功時の処理...
                 if (i == count - 1) // 最後の画像のロードが完了した場合
                 {
                     _loadingText.gameObject.SetActive(false); // ローディングテキストを非表示に
+                    _isGachaInProgress = false; // ガチャの進行状態をリセット
+
+                    // ボタンを再度有効にする処理（必要に応じて）
+                    // _yourButton.interactable = true;
                 }
             }
             else
             {
                 Debug.LogError($"画像取得失敗: {request.error}");
 
-                // ...失敗時の処理...
                 _loadingText.text = "ロード失敗"; // エラーメッセージに更新
             }
         }
@@ -192,5 +194,15 @@ public class DogTextureLoader : MonoBehaviour
         }
 
         return Rarity.R; // デフォルトは R
+    }
+
+    /// <summary>
+    /// ガチャの状態をリセットする
+    /// </summary>
+    public void ResetGacha()
+    {
+        _gachaData.gachaResults = new GachaData.GachaResult[0]; // 空の配列に設定
+        //_loadingText.gameObject.SetActive(false); // ローディングテキストを非表示
+        _isGachaInProgress = false; // ガチャの進行状態をリセット
     }
 }

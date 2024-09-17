@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6efbd8ed077337b4d87db1065ce956f4, type: 3}
-  m_Name: GachaDataAsset
+  m_Name: GachaData
   m_EditorClassIdentifier: 
   gachaTextures: []

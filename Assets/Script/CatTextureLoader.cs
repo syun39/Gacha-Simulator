@@ -7,9 +7,6 @@ using UnityEngine.UI;
 
 public class CatTextureLoader : MonoBehaviour
 {
-    // Singleton インスタンス
-    public static CatTextureLoader Instance { get; private set; }
-
     // 猫の画像を取得するためのAPI URL
     private string _urlAPI = "https://cataas.com/cat";
 
@@ -33,29 +30,15 @@ public class CatTextureLoader : MonoBehaviour
     // ガチャの回数
     private int _maxImages = 1;
 
-    private void Start()
-    {
-        //_loadingText.gameObject.SetActive(false);
-    }
-
-    private void Awake()
-    {
-        // Singleton パターンの適用
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject); // 既に存在する場合は自分自身を破棄
-        }
-    }
-
+    private bool _isGachaInProgress = false;
 
     // 単発ガチャがクリックされたときに呼び出される
     public void OnSingleGachaClick()
     {
+        if (_isGachaInProgress) return;
+
+        ResetGacha(); // ガチャの状態をリセット
+        _isGachaInProgress = true;
         _maxImages = 1; // 単発ガチャは1回だけ
         StartCoroutine(GetAPI(_maxImages));
         _loadingText.gameObject.SetActive(true);
@@ -64,6 +47,10 @@ public class CatTextureLoader : MonoBehaviour
     // 10連ガチャがクリックされたときに呼び出される
     public void OnTenGachaClick()
     {
+        if (_isGachaInProgress) return;
+
+        ResetGacha(); // ガチャの状態をリセット
+        _isGachaInProgress = true;
         _maxImages = 10; // 10連ガチャは10回
         StartCoroutine(GetAPI(_maxImages));
         _loadingText.gameObject.SetActive(true);
@@ -97,6 +84,7 @@ public class CatTextureLoader : MonoBehaviour
                 if (i == count - 1) // 最後の画像のロードが完了した場合
                 {
                     _loadingText.gameObject.SetActive(false); // ローディングテキストを非表示に
+                    _isGachaInProgress = false; // ガチャの進行状態をリセット
                 }
 
                 Texture2D texture = DownloadHandlerTexture.GetContent(request);
@@ -187,6 +175,13 @@ public class CatTextureLoader : MonoBehaviour
         }
 
         return Rarity.R; // デフォルトは R
+    }
+
+    public void ResetGacha()
+    {
+        _gachaData.gachaResults = new GachaData.GachaResult[0]; // 空の配列に設定
+        //_loadingText.gameObject.SetActive(false); // ローディングテキストを非表示
+        _isGachaInProgress = false; // ガチャの進行状態をリセット
     }
 }
 

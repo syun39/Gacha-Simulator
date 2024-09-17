@@ -1,11 +1,9 @@
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GachaResultDisplay : MonoBehaviour
 {
-    // Singleton インスタンス
-    public static GachaResultDisplay Instance { get; private set; }
 
     // GachaData ScriptableObject の参照
     [SerializeField] GachaData _gachaData;
@@ -23,30 +21,13 @@ public class GachaResultDisplay : MonoBehaviour
         // 最初の画像を表示（テクスチャが存在する場合）
         if (_gachaData.gachaResults.Length > 0)
         {
+            _currentImageIndex = 0; // インデックスをリセット
             DisplayResult(_currentImageIndex);
-        }
-    }
-
-    private void Awake()
-    {
-        // Singleton パターンの適用
-        if (Instance == null)
-        {
-
-            Instance = this;
-
-            // ルートオブジェクトに対して DontDestroyOnLoad を適用
-            DontDestroyOnLoad(transform.root.gameObject);
-        }
-        else
-        {
-            Destroy(gameObject); // 既に存在する場合は自分自身を破棄
         }
     }
 
     void Update()
     {
-        // エンターキーが押されたら次の画像を表示
         if (Input.GetKeyDown(KeyCode.Return))
         {
             if (_currentImageIndex < _gachaData.gachaResults.Length - 1)
@@ -56,8 +37,7 @@ public class GachaResultDisplay : MonoBehaviour
             }
             else
             {
-                // 全ての画像を表示し終わったらシーン遷移
-                EditorApplication.isPlaying = false;
+                SceneManager.LoadScene("Result Scene");
             }
         }
     }
@@ -79,5 +59,14 @@ public class GachaResultDisplay : MonoBehaviour
 
         // 現在の画像が何枚目かを表示
         _currentImageIndexText.text = $"{_currentImageIndex + 1}";
+    }
+
+    /// <summary>
+    /// もう一度ガチャを引くためのメソッド
+    /// </summary>
+    public void OnRetryGachaClick()
+    {
+        // ガチャ結果のリセット
+        _gachaData.gachaResults = null;
     }
 }

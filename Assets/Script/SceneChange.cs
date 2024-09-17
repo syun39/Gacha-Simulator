@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneChange : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class SceneChange : MonoBehaviour
     [Tooltip("SEが鳴ったら表示するイラスト"), Header("URシーンのみアタッチ")]
     [SerializeField] private GameObject _image = null;
 
-    [Tooltip("エンターを押されたら表示するイラスト"),Header("SSRTwoシーンのみアタッチ")]
+    [Tooltip("エンターを押されたら表示するイラスト"), Header("SSRTwoシーンのみアタッチ")]
     [SerializeField] private GameObject _mikuRin = null;
 
     private bool _isPlay = false;
@@ -62,10 +63,27 @@ public class SceneChange : MonoBehaviour
             }
             else
             {
-                // 指定されたシーンに遷移する
-                SceneManager.LoadScene(_nextScene);
+                ChangeScene();
             }
         }
+    }
+
+    /// <summary>
+    /// シーン遷移
+    /// </summary>
+    public void ChangeScene()
+    {
+        // 指定されたシーンに遷移する
+        SceneManager.LoadScene(_nextScene);
+    }
+
+    /// <summary>
+    /// 2つ目以降のシーン遷移
+    /// </summary>
+    /// <param name="sceneName"></param>
+    public void ChangeTitleScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 
     /// <summary>
@@ -77,7 +95,7 @@ public class SceneChange : MonoBehaviour
         _mikuRin.SetActive(true);
         _isPlay = false;
         yield return new WaitForSeconds(1.7f);
-        SceneManager.LoadScene(_nextScene);
+        ChangeScene();
     }
 
     /// <summary>
@@ -116,6 +134,6 @@ public class SceneChange : MonoBehaviour
         yield return new WaitWhile(() => _seSource.isPlaying);
 
         // シーン遷移
-        SceneManager.LoadScene(_nextScene);
+        ChangeScene();
     }
 }
