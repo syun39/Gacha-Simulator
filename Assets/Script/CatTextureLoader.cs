@@ -18,6 +18,14 @@ public class CatTextureLoader : MonoBehaviour
 
     [SerializeField] Text _loadingText; // ローディングテキストの追加
 
+    [SerializeField] private Image _singleButton;
+
+    [SerializeField] private Image _tenButton;
+
+    [SerializeField] private Image _changeButton;
+
+    [SerializeField] private Image _probabilityButton;
+
     // レア度ごとのシーン名
     [SerializeField] private string _normalScene = "";
 
@@ -27,9 +35,6 @@ public class CatTextureLoader : MonoBehaviour
 
     [SerializeField] private string _oneURScene = "";
 
-    // ガチャの回数
-    private int _maxImages = 1;
-
     private bool _isGachaInProgress = false;
 
     // 単発ガチャがクリックされたときに呼び出される
@@ -37,11 +42,14 @@ public class CatTextureLoader : MonoBehaviour
     {
         if (_isGachaInProgress) return;
 
-        ResetGacha(); // ガチャの状態をリセット
         _isGachaInProgress = true;
-        _maxImages = 1; // 単発ガチャは1回だけ
-        StartCoroutine(GetAPI(_maxImages));
+        StartCoroutine(GetAPI(1));
         _loadingText.gameObject.SetActive(true);
+
+        _singleButton.raycastTarget = false;
+        _tenButton.raycastTarget = false;
+        _changeButton.raycastTarget = false;
+        _probabilityButton.raycastTarget = false;
     }
 
     // 10連ガチャがクリックされたときに呼び出される
@@ -49,11 +57,14 @@ public class CatTextureLoader : MonoBehaviour
     {
         if (_isGachaInProgress) return;
 
-        ResetGacha(); // ガチャの状態をリセット
         _isGachaInProgress = true;
-        _maxImages = 10; // 10連ガチャは10回
-        StartCoroutine(GetAPI(_maxImages));
+        StartCoroutine(GetAPI(10));
         _loadingText.gameObject.SetActive(true);
+
+        _singleButton.raycastTarget = false;
+        _tenButton.raycastTarget = false;
+        _changeButton.raycastTarget = false;
+        _probabilityButton.raycastTarget = false;
     }
 
     // 指定された回数（count）の猫画像を取得し、GachaData に保存する
@@ -85,6 +96,11 @@ public class CatTextureLoader : MonoBehaviour
                 {
                     _loadingText.gameObject.SetActive(false); // ローディングテキストを非表示に
                     _isGachaInProgress = false; // ガチャの進行状態をリセット
+
+                    _singleButton.raycastTarget = true;
+                    _tenButton.raycastTarget = true;
+                    _changeButton.raycastTarget = true;
+                    _probabilityButton.raycastTarget = true;
                 }
 
                 Texture2D texture = DownloadHandlerTexture.GetContent(request);
@@ -175,13 +191,6 @@ public class CatTextureLoader : MonoBehaviour
         }
 
         return Rarity.R; // デフォルトは R
-    }
-
-    public void ResetGacha()
-    {
-        _gachaData.gachaResults = new GachaData.GachaResult[0]; // 空の配列に設定
-        //_loadingText.gameObject.SetActive(false); // ローディングテキストを非表示
-        _isGachaInProgress = false; // ガチャの進行状態をリセット
     }
 }
 

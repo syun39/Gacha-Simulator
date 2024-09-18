@@ -60,13 +60,4 @@ public class GachaResultDisplay : MonoBehaviour
         // 現在の画像が何枚目かを表示
         _currentImageIndexText.text = $"{_currentImageIndex + 1}";
     }
-
-    /// <summary>
-    /// もう一度ガチャを引くためのメソッド
-    /// </summary>
-    public void OnRetryGachaClick()
-    {
-        // ガチャ結果のリセット
-        _gachaData.gachaResults = null;
-    }
 }

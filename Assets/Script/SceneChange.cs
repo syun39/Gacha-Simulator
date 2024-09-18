@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class SceneChange : MonoBehaviour
 {
@@ -31,6 +30,8 @@ public class SceneChange : MonoBehaviour
     // SSRÉVÅ[ÉìÇ©Ç«Ç§Ç©
     private bool _isSSRTwoScene = false;
 
+    private bool _isResultScene = false;
+
     private void Start()
     {
         _isPlay = true;
@@ -46,6 +47,10 @@ public class SceneChange : MonoBehaviour
             _mikuRin.SetActive(false);
             _isSSRTwoScene = true;
         }
+        else if (SceneManager.GetActiveScene().name == "Result Scene")
+        {
+            _isResultScene = true;
+        }
     }
 
     private void Update()
@@ -60,6 +65,10 @@ public class SceneChange : MonoBehaviour
             else if (_isSSRTwoScene)
             {
                 StartCoroutine(SSRTwoTransition());
+            }
+            else if (_isResultScene)
+            {
+                return;
             }
             else
             {

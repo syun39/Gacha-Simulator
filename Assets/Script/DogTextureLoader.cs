@@ -19,6 +19,14 @@ public class DogTextureLoader : MonoBehaviour
     [SerializeField] private GachaSetting _gachaSetting; // レア度設定
     [SerializeField] Text _loadingText; // ローディングテキストの追加
 
+    [SerializeField] private Image _singleButton;
+
+    [SerializeField] private Image _tenButton;
+
+    [SerializeField] private Image _changeButton;
+
+    [SerializeField] private Image _probabilityButton;
+
     // レア度ごとのシーン名
     [SerializeField] private string _normalScene = "";
 
@@ -32,24 +40,21 @@ public class DogTextureLoader : MonoBehaviour
 
     private bool _isGachaInProgress = false;
 
-    private void Start()
-    {
-        //_loadingText.gameObject.SetActive(false);
-    }
-
     // 単発ガチャがクリックされたときに呼び出される
     public void OnSingleGachaClick()
     {
         if (_isGachaInProgress) return;
 
-        ResetGacha(); // ガチャの状態をリセット
         _maxImages = 1; // 単発ガチャ
         StartCoroutine(GetAPI(_maxImages));
         _loadingText.gameObject.SetActive(true); // ローディングテキストを表示
         _isGachaInProgress = true;
 
-        // ボタンを無効化する処理（必要に応じて）
-         //_yourButton.interactable = false;
+        // ボタンを無効化する処理
+        _singleButton.raycastTarget = false;
+        _tenButton.raycastTarget = false;
+        _changeButton.raycastTarget = false;
+        _probabilityButton.raycastTarget = false;
     }
 
     // 10連ガチャがクリックされたときに呼び出される
@@ -57,14 +62,16 @@ public class DogTextureLoader : MonoBehaviour
     {
         if (_isGachaInProgress) return;
 
-        ResetGacha(); // ガチャの状態をリセット
         _maxImages = 10; // 10連ガチャ
         StartCoroutine(GetAPI(_maxImages));
         _loadingText.gameObject.SetActive(true); // ローディングテキストを表示
         _isGachaInProgress = true;
 
         // ボタンを無効化する処理（必要に応じて）
-        // _yourButton.interactable = false;
+         _singleButton.raycastTarget = false;
+        _tenButton.raycastTarget = false;
+        _changeButton.raycastTarget = false;
+        _probabilityButton.raycastTarget = false;
     }
 
     // APIを使って画像を取得し、レア度と一緒にGachaDataに保存
@@ -94,8 +101,11 @@ public class DogTextureLoader : MonoBehaviour
                     _loadingText.gameObject.SetActive(false); // ローディングテキストを非表示に
                     _isGachaInProgress = false; // ガチャの進行状態をリセット
 
-                    // ボタンを再度有効にする処理（必要に応じて）
-                    // _yourButton.interactable = true;
+                    // ボタンを再度有効にする処理
+                     _singleButton.raycastTarget = true;
+                    _tenButton.raycastTarget = true;
+                    _changeButton.raycastTarget = true;
+                    _probabilityButton.raycastTarget = true;
                 }
             }
             else
@@ -194,15 +204,5 @@ public class DogTextureLoader : MonoBehaviour
         }
 
         return Rarity.R; // デフォルトは R
-    }
-
-    /// <summary>
-    /// ガチャの状態をリセットする
-    /// </summary>
-    public void ResetGacha()
-    {
-        _gachaData.gachaResults = new GachaData.GachaResult[0]; // 空の配列に設定
-        //_loadingText.gameObject.SetActive(false); // ローディングテキストを非表示
-        _isGachaInProgress = false; // ガチャの進行状態をリセット
     }
 }
