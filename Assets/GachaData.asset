@@ -12,4 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6efbd8ed077337b4d87db1065ce956f4, type: 3}
   m_Name: GachaData
   m_EditorClassIdentifier: 
-  gachaTextures: []
+  gachaResults:
+  - texture: {fileID: 0}
+    rarity: 0
+  - texture: {fileID: 0}
+    rarity: 0
+  - texture: {fileID: 0}
+    rarity: 0
+  - texture: {fileID: 0}
+    rarity: 0
+  - texture: {fileID: 0}
+    rarity: 0
+  - texture: {fileID: 0}
+    rarity: 0
+  - texture: {fileID: 0}
+    rarity: 1
+  - texture: {fileID: 0}
+    rarity: 0
+  - texture: {fileID: 0}
+    rarity: 1
+  - texture: {fileID: 0}
+    rarity: 1
+  totalGachaCount: 390

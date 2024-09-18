@@ -15,7 +15,7 @@ public enum Rarity
 [CreateAssetMenu(fileName = "GachaSetting", menuName = "Gacha/GachaSetting")]
 public class GachaSetting : ScriptableObject
 {
-    // レア度ごとの排出率を管理するクラス
+    // レア度ごとの排出率を管理
     [Serializable]
     public class RarityRate
     {
@@ -23,9 +23,8 @@ public class GachaSetting : ScriptableObject
         public float rate; // 排出率
     }
 
-    // RarityRate の配列を使って排出率を設定
-    [SerializeField]
-    public RarityRate[] rarityRates = new RarityRate[]
+    // 排出率を設定
+    [SerializeField] public RarityRate[] rarityRates =
     {
         new RarityRate { rarity = Rarity.R, rate = 70f },
         new RarityRate { rarity = Rarity.SR, rate = 26f },

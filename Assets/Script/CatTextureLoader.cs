@@ -16,6 +16,9 @@ public class CatTextureLoader : MonoBehaviour
     // GachaSetting の参照 (排出率設定)
     [SerializeField] private GachaSetting _gachaSetting;
 
+    [Tooltip("ガチャの天井")]
+    [SerializeField] int _ceilingCount = 200;
+
     [SerializeField] Text _loadingText; // ローディングテキストの追加
 
     [SerializeField] private Image _singleButton;
@@ -25,6 +28,10 @@ public class CatTextureLoader : MonoBehaviour
     [SerializeField] private Image _changeButton;
 
     [SerializeField] private Image _probabilityButton;
+
+    [SerializeField] private Text _remainingText; // 天井まで残り何回か
+
+    [SerializeField] private Text _text; // UR確定までと表示
 
     // レア度ごとのシーン名
     [SerializeField] private string _normalScene = "";
@@ -37,14 +44,21 @@ public class CatTextureLoader : MonoBehaviour
 
     private bool _isGachaInProgress = false;
 
+    private void Start()
+    {
+        // 初期化時に残り回数の表示を更新
+        UpdateCatRemainingCount();
+    }
+
     // 単発ガチャがクリックされたときに呼び出される
     public void OnSingleGachaClick()
     {
         if (_isGachaInProgress) return;
 
+        _remainingText.gameObject.SetActive(false);
+        _text.gameObject.SetActive(false);
         _isGachaInProgress = true;
         StartCoroutine(GetAPI(1));
-        _loadingText.gameObject.SetActive(true);
 
         _singleButton.raycastTarget = false;
         _tenButton.raycastTarget = false;
@@ -57,9 +71,10 @@ public class CatTextureLoader : MonoBehaviour
     {
         if (_isGachaInProgress) return;
 
+        _remainingText.gameObject.SetActive(false);
+        _text.gameObject.SetActive(false);
         _isGachaInProgress = true;
         StartCoroutine(GetAPI(10));
-        _loadingText.gameObject.SetActive(true);
 
         _singleButton.raycastTarget = false;
         _tenButton.raycastTarget = false;
@@ -80,6 +95,22 @@ public class CatTextureLoader : MonoBehaviour
             // レア度をランダムに決定
             Rarity selectedRarity = GetRandomRarity();
 
+            // 天井システムの実装
+            if (_gachaData.totalGachaCount % _ceilingCount == _ceilingCount - 1)
+            {
+                // 200回ごとに必ずURを出す
+                selectedRarity = Rarity.UR;
+            }
+            else
+            {
+                selectedRarity = GetRandomRarity();
+            }
+
+            // ガチャ回数をインクリメント
+            _gachaData.totalGachaCount++;
+
+            UpdateCatRemainingCount();
+
 #if UNITY_EDITOR
             //Debug.Log($"排出されたレア度: {selectedRarity}");
 #endif
@@ -96,11 +127,16 @@ public class CatTextureLoader : MonoBehaviour
                 {
                     _loadingText.gameObject.SetActive(false); // ローディングテキストを非表示に
                     _isGachaInProgress = false; // ガチャの進行状態をリセット
+                    _remainingText.gameObject.SetActive(true);
+                    _text.gameObject.SetActive(true);
 
                     _singleButton.raycastTarget = true;
                     _tenButton.raycastTarget = true;
                     _changeButton.raycastTarget = true;
                     _probabilityButton.raycastTarget = true;
+
+                    // 残り回数の表示を更新
+                    UpdateCatRemainingCount();
                 }
 
                 Texture2D texture = DownloadHandlerTexture.GetContent(request);
@@ -123,6 +159,8 @@ public class CatTextureLoader : MonoBehaviour
                 Debug.LogError($"リクエスト失敗: {request.error}");
 
                 _loadingText.text = "ロード失敗"; // エラーメッセージに更新
+
+                // タイトルに戻るプログラムを書く
             }
         }
 
@@ -191,6 +229,15 @@ public class CatTextureLoader : MonoBehaviour
         }
 
         return Rarity.R; // デフォルトは R
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private void UpdateCatRemainingCount()
+    {
+        int remainingToUR = _ceilingCount - (_gachaData.totalGachaCount % _ceilingCount);
+        _remainingText.text = $"残り {remainingToUR}回";
     }
 }
 

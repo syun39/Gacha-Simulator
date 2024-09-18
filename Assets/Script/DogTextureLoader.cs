@@ -15,40 +15,56 @@ public class DogTextureLoader : MonoBehaviour
         public string message;
     }
 
-    [SerializeField] private GachaData _gachaData;
-    [SerializeField] private GachaSetting _gachaSetting; // レア度設定
-    [SerializeField] Text _loadingText; // ローディングテキストの追加
+    [SerializeField] GachaData _gachaData; // GachaData
 
-    [SerializeField] private Image _singleButton;
+    [SerializeField] GachaSetting _gachaSetting; // レア度設定
 
-    [SerializeField] private Image _tenButton;
+    [Tooltip("ガチャの天井")]
+    [SerializeField] int _ceilingCount = 200;
 
-    [SerializeField] private Image _changeButton;
+    [SerializeField] Text _loadingText; // ローディングテキスト
 
-    [SerializeField] private Image _probabilityButton;
+    [SerializeField] Image _singleButton; // 単発ガチャボタン
+
+    [SerializeField] Image _tenButton; // 10連ガチャボタン
+
+    [SerializeField] Image _changeButton; // ガチャ切り替えボタン
+
+    [SerializeField] Image _probabilityButton; // 確率表示ボタン
+
+    [SerializeField] Text _remainingText; // 天井まで残り何回か
+
+    [SerializeField] Text _text; // UR確定までと表示
 
     // レア度ごとのシーン名
-    [SerializeField] private string _normalScene = "";
+    [SerializeField] string _normalScene = ""; // 爆死シーン
 
-    [SerializeField] private string _oneSSRScene = "";
+    [SerializeField] string _oneSSRScene = ""; // SSR確定シーン
 
-    [SerializeField] private string _moreSSRScene = "";
+    [SerializeField] string _moreSSRScene = ""; // SSR2枚以上シーン
 
-    [SerializeField] private string _oneURScene = "";
+    [SerializeField] string _oneURScene = ""; // UR確定シーン
 
-    private int _maxImages = 1;
+    private bool _isGachaInProgress = false; // ガチャが進行中か
 
-    private bool _isGachaInProgress = false;
+    private void Start()
+    {
+        // 初期化時に残り回数の表示を更新
+        UpdateDogRemainingCount();
+    }
 
-    // 単発ガチャがクリックされたときに呼び出される
+    /// <summary>
+    /// 単発ガチャ
+    /// </summary>
     public void OnSingleGachaClick()
     {
+        // ガチャが進行中の場合
         if (_isGachaInProgress) return;
 
-        _maxImages = 1; // 単発ガチャ
-        StartCoroutine(GetAPI(_maxImages));
-        _loadingText.gameObject.SetActive(true); // ローディングテキストを表示
-        _isGachaInProgress = true;
+        _remainingText.gameObject.SetActive(false);
+        _text.gameObject.SetActive(false);
+        StartCoroutine(GetAPI(1));
+        _isGachaInProgress = true; // ガチャが進行中
 
         // ボタンを無効化する処理
         _singleButton.raycastTarget = false;
@@ -57,18 +73,21 @@ public class DogTextureLoader : MonoBehaviour
         _probabilityButton.raycastTarget = false;
     }
 
-    // 10連ガチャがクリックされたときに呼び出される
+    /// <summary>
+    /// 10連ガチャ
+    /// </summary>
     public void OnTenGachaClick()
     {
+        // ガチャが進行中の場合
         if (_isGachaInProgress) return;
 
-        _maxImages = 10; // 10連ガチャ
-        StartCoroutine(GetAPI(_maxImages));
-        _loadingText.gameObject.SetActive(true); // ローディングテキストを表示
-        _isGachaInProgress = true;
+        _remainingText.gameObject.SetActive(false);
+        _text.gameObject.SetActive(false);
+        StartCoroutine(GetAPI(10));
+        _isGachaInProgress = true; // ガチャが進行中
 
-        // ボタンを無効化する処理（必要に応じて）
-         _singleButton.raycastTarget = false;
+        // ボタンを無効化する処理
+        _singleButton.raycastTarget = false;
         _tenButton.raycastTarget = false;
         _changeButton.raycastTarget = false;
         _probabilityButton.raycastTarget = false;
@@ -87,11 +106,30 @@ public class DogTextureLoader : MonoBehaviour
             // レア度をランダムに決定
             Rarity selectedRarity = GetRandomRarity();
 
+            // 天井システムの実装
+            if (_gachaData.totalGachaCount % _ceilingCount == _ceilingCount - 1) // _ceilingCountの倍数に1足りない状態なら
+            {
+                // _ceilingCount 回ごとに必ずURを出す
+                selectedRarity = Rarity.UR;
+            }
+            else
+            {
+                selectedRarity = GetRandomRarity();
+            }
+
+            // ガチャ回数をインクリメント
+            _gachaData.totalGachaCount++;
+
+            UpdateDogRemainingCount();
+
+            // APIリクエストを送信
             UnityWebRequest request = UnityWebRequest.Get("https://dog.ceo/api/breeds/image/random");
             yield return request.SendWebRequest();
 
+            // 成功したら
             if (request.result == UnityWebRequest.Result.Success)
             {
+                // レスポンスの処理
                 string jsonResponse = request.downloadHandler.text;
                 ResponseData response = JsonUtility.FromJson<ResponseData>(jsonResponse);
                 yield return StartCoroutine(GetTexture(response.message, i, selectedRarity));
@@ -100,12 +138,18 @@ public class DogTextureLoader : MonoBehaviour
                 {
                     _loadingText.gameObject.SetActive(false); // ローディングテキストを非表示に
                     _isGachaInProgress = false; // ガチャの進行状態をリセット
+                    _remainingText.gameObject.SetActive(true);
+                    _text.gameObject.SetActive(true);
 
                     // ボタンを再度有効にする処理
-                     _singleButton.raycastTarget = true;
+                    _singleButton.raycastTarget = true;
                     _tenButton.raycastTarget = true;
                     _changeButton.raycastTarget = true;
                     _probabilityButton.raycastTarget = true;
+
+
+                    // 残り回数の表示を更新
+                    UpdateDogRemainingCount();
                 }
             }
             else
@@ -113,6 +157,8 @@ public class DogTextureLoader : MonoBehaviour
                 Debug.LogError($"画像取得失敗: {request.error}");
 
                 _loadingText.text = "ロード失敗"; // エラーメッセージに更新
+
+                // タイトルに戻るプログラムを書く
             }
         }
 
@@ -148,12 +194,13 @@ public class DogTextureLoader : MonoBehaviour
 #if UNITY_EDITOR
             Debug.Log($"Image Width: {texture.width}");
             Debug.Log($"Image Height: {texture.height}");
-#endif
+
         }
         else
         {
             Debug.LogError($"テクスチャ取得失敗: {request.error}");
         }
+#endif
     }
 
     /// <summary>
@@ -182,27 +229,39 @@ public class DogTextureLoader : MonoBehaviour
         }
     }
 
-    // レア度をランダムに決定
+    /// <summary>
+    /// レア度をランダムに決定(累積確率)
+    /// </summary>
     private Rarity GetRandomRarity()
     {
         float total = 0f;
         foreach (var rate in _gachaSetting.rarityRates)
         {
-            total += rate.rate;
+            total += rate.rate; // 各レア度の確率を合計
         }
 
-        float randomValue = UnityEngine.Random.Range(0, total);
+        float randomValue = UnityEngine.Random.Range(0, total); // ランダムな値を生成
         float cumulative = 0f;
 
         foreach (var rate in _gachaSetting.rarityRates)
         {
-            cumulative += rate.rate;
+            cumulative += rate.rate; // 確率の累積値を計算
             if (randomValue <= cumulative)
             {
-                return rate.rarity;
+                return rate.rarity; // ランダムな値に対応するレア度を返す
             }
         }
 
         return Rarity.R; // デフォルトは R
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private void UpdateDogRemainingCount()
+    {
+        // 現在のガチャ回数が _ceilingCount の倍数からどれだけ離れているか
+        int remainingToUR = _ceilingCount - (_gachaData.totalGachaCount % _ceilingCount);
+        _remainingText.text = $"残り {remainingToUR}回";
     }
 }

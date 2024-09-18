@@ -5,49 +5,51 @@ using UnityEngine.UI;
 public class GachaResultDisplay : MonoBehaviour
 {
 
-    // GachaData ScriptableObject の参照
+    // GachaData
     [SerializeField] GachaData _gachaData;
+    [SerializeField] Image _gachaImage; // 画像表示
+    [SerializeField] private RarityText _rarityTextComponent; // レア度の表示
 
-    // Unity UI の Image と Text コンポーネントへの参照
-    [SerializeField] Image _gachaImage;
-    [SerializeField] private RarityText _rarityTextComponent; // RarityText スクリプトの参照
+    [SerializeField] Text _currentImageIndexText; // 現在の画像が何枚目かを表示するテキスト
 
-    [SerializeField] Text _currentImageIndexText; // 現在の画像が何枚目か
-
+    // 現在の画像が何枚目か
     private int _currentImageIndex = 0;
 
     void Start()
     {
-        // 最初の画像を表示（テクスチャが存在する場合）
+        // 最初の画像を表示
         if (_gachaData.gachaResults.Length > 0)
         {
-            _currentImageIndex = 0; // インデックスをリセット
-            DisplayResult(_currentImageIndex);
+            DisplayResult(_currentImageIndex); // 初期画像表示
         }
     }
 
     void Update()
     {
+        // エンターキーが押されたら
         if (Input.GetKeyDown(KeyCode.Return))
         {
+            // 現在の画像インデックスが最後の画像のインデックスより小さい場合
             if (_currentImageIndex < _gachaData.gachaResults.Length - 1)
             {
                 _currentImageIndex++;
-                DisplayResult(_currentImageIndex);
+                DisplayResult(_currentImageIndex); // 次の画像を表示
             }
             else
             {
+                // すべての画像を表示したらシーン遷移
                 SceneManager.LoadScene("Result Scene");
             }
         }
     }
 
     /// <summary>
-    /// 画像とレア度を表示するメソッド
+    /// 画像とレア度を表示する
     /// </summary>
-    /// <param name="index"></param>
+    /// <param name="index">表示する画像のインデックス</param>
     void DisplayResult(int index)
     {
+        // インデックスの結果を取得
         var result = _gachaData.gachaResults[index];
 
         // テクスチャをImageに適用

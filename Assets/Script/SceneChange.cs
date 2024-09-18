@@ -22,7 +22,8 @@ public class SceneChange : MonoBehaviour
     [Tooltip("エンターを押されたら表示するイラスト"), Header("SSRTwoシーンのみアタッチ")]
     [SerializeField] private GameObject _mikuRin = null;
 
-    private bool _isPlay = false;
+    // エンターキーを無効にするかどうか
+    private bool _isInvalid = false;
 
     // URシーンかどうか
     private bool _isURScene = false;
@@ -30,11 +31,12 @@ public class SceneChange : MonoBehaviour
     // SSRシーンかどうか
     private bool _isSSRTwoScene = false;
 
+    // Resultシーンかどうか
     private bool _isResultScene = false;
 
     private void Start()
     {
-        _isPlay = true;
+        _isInvalid = true; // エンターキー有効
 
         if (SceneManager.GetActiveScene().name == "UR Scene")
         {
@@ -55,8 +57,8 @@ public class SceneChange : MonoBehaviour
 
     private void Update()
     {
-        // エンターキーが押されたかを確認
-        if (_isPlay && Input.GetKeyDown(KeyCode.Return))
+        // エンターキーが押されたら
+        if (_isInvalid && Input.GetKeyDown(KeyCode.Return))
         {
             if (_isURScene)
             {
@@ -96,29 +98,27 @@ public class SceneChange : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// SSR2枚以上の時のシーン遷移
     /// </summary>
-    /// <returns></returns>
     IEnumerator SSRTwoTransition()
     {
         _mikuRin.SetActive(true);
-        _isPlay = false;
+        _isInvalid = false; // エンターキーを無効
         yield return new WaitForSeconds(1.7f);
         ChangeScene();
     }
 
     /// <summary>
-    /// 
+    /// UR1枚以上
     /// </summary>
-    /// <returns></returns>
     IEnumerator URTransition()
     {
-        // BGMを止める
+        // BGM再生中なら止める
         if (_bgmSource?.isPlaying == true)
         {
             _bgmSource.Stop();
         }
-        _isPlay = false;
+        _isInvalid = false; // エンターキーを無効
 
         // 1秒待機
         yield return new WaitForSeconds(1.0f);
@@ -129,6 +129,7 @@ public class SceneChange : MonoBehaviour
             _seSource.Play();
         }
 
+        // イラストを表示
         _image?.SetActive(true);
 
         // 0.5秒待機

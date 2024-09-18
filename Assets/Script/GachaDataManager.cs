@@ -1,10 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GachaDataManager : MonoBehaviour
 {
+    // シングルトンインスタンス
     public static GachaDataManager Instance { get; private set; }
+
+    // GachaData 
     [SerializeField] private GachaData _gachaData;
 
     private void Awake()
