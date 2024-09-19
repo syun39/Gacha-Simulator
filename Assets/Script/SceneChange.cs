@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class SceneChange : MonoBehaviour
 {
     [Tooltip("遷移先のシーン名")]
-    [SerializeField] private string _nextScene;
+    [SerializeField] private string _nextScene = null;
 
     [Tooltip("BGMのAudioSource"), Header("URシーンのみアタッチ")]
     [SerializeField] private AudioSource _bgmSource = null;
@@ -84,16 +84,29 @@ public class SceneChange : MonoBehaviour
     /// </summary>
     public void ChangeScene()
     {
-        // 指定されたシーンに遷移する
-        SceneManager.LoadScene(_nextScene);
+        if(_nextScene != null)
+        {
+            // 指定されたシーンに遷移する
+            SceneManager.LoadScene(_nextScene);
+        }
+       
     }
 
     /// <summary>
-    /// 2つ目以降のシーン遷移
+    /// シーン遷移を遅らせる場合
     /// </summary>
     /// <param name="sceneName"></param>
     public void ChangeTitleScene(string sceneName)
     {
+        StartCoroutine(WaitLoadScene(sceneName));
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private IEnumerator WaitLoadScene(string sceneName)
+    {
+        yield return new WaitForSeconds(0.4f);
         SceneManager.LoadScene(sceneName);
     }
 

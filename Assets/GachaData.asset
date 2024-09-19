@@ -15,22 +15,4 @@ MonoBehaviour:
   gachaResults:
   - texture: {fileID: 0}
     rarity: 0
-  - texture: {fileID: 0}
-    rarity: 0
-  - texture: {fileID: 0}
-    rarity: 0
-  - texture: {fileID: 0}
-    rarity: 0
-  - texture: {fileID: 0}
-    rarity: 0
-  - texture: {fileID: 0}
-    rarity: 0
-  - texture: {fileID: 0}
-    rarity: 1
-  - texture: {fileID: 0}
-    rarity: 0
-  - texture: {fileID: 0}
-    rarity: 1
-  - texture: {fileID: 0}
-    rarity: 1
-  totalGachaCount: 390
+  totalGachaCount: 0

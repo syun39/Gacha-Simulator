@@ -106,10 +106,7 @@ public class CatTextureLoader : MonoBehaviour
                 selectedRarity = GetRandomRarity();
             }
 
-            // ガチャ回数をインクリメント
-            _gachaData.totalGachaCount++;
-
-            UpdateCatRemainingCount();
+            
 
 #if UNITY_EDITOR
             //Debug.Log($"排出されたレア度: {selectedRarity}");
@@ -122,6 +119,11 @@ public class CatTextureLoader : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
+                // ガチャ回数をインクリメント
+                _gachaData.totalGachaCount++;
+
+                UpdateCatRemainingCount();
+
                 // ...成功時の処理...
                 if (i == count - 1) // 最後の画像のロードが完了した場合
                 {
@@ -159,8 +161,10 @@ public class CatTextureLoader : MonoBehaviour
                 Debug.LogError($"リクエスト失敗: {request.error}");
 
                 _loadingText.text = "ロード失敗"; // エラーメッセージに更新
+                yield return new WaitForSeconds(1.8f);
 
-                // タイトルに戻るプログラムを書く
+                // タイトルに戻る
+                SceneManager.LoadScene("Title");
             }
         }
 

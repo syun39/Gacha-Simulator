@@ -1349,6 +1349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gachaData: {fileID: 11400000, guid: e91533e7eb2129f4ebe8cf42f63a4292, type: 2}
   _gachaSetting: {fileID: 11400000, guid: 84d0ad85d9f46624fb2cea574c3d5d7c, type: 2}
+  _ceilingCount: 200
   _loadingText: {fileID: 636222710}
   _singleButton: {fileID: 560537915}
   _tenButton: {fileID: 905144150}

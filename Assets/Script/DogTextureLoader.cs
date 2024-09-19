@@ -117,11 +117,6 @@ public class DogTextureLoader : MonoBehaviour
                 selectedRarity = GetRandomRarity();
             }
 
-            // ガチャ回数をインクリメント
-            _gachaData.totalGachaCount++;
-
-            UpdateDogRemainingCount();
-
             // APIリクエストを送信
             UnityWebRequest request = UnityWebRequest.Get("https://dog.ceo/api/breeds/image/random");
             yield return request.SendWebRequest();
@@ -133,6 +128,11 @@ public class DogTextureLoader : MonoBehaviour
                 string jsonResponse = request.downloadHandler.text;
                 ResponseData response = JsonUtility.FromJson<ResponseData>(jsonResponse);
                 yield return StartCoroutine(GetTexture(response.message, i, selectedRarity));
+
+                // ガチャ回数をインクリメント
+                _gachaData.totalGachaCount++;
+
+                UpdateDogRemainingCount();
 
                 if (i == count - 1) // 最後の画像のロードが完了した場合
                 {
@@ -157,8 +157,10 @@ public class DogTextureLoader : MonoBehaviour
                 Debug.LogError($"画像取得失敗: {request.error}");
 
                 _loadingText.text = "ロード失敗"; // エラーメッセージに更新
+                yield return new WaitForSeconds(1.8f);
 
-                // タイトルに戻るプログラムを書く
+                // タイトルに戻る
+                SceneManager.LoadScene("Title");
             }
         }
 
@@ -199,6 +201,12 @@ public class DogTextureLoader : MonoBehaviour
         else
         {
             Debug.LogError($"テクスチャ取得失敗: {request.error}");
+
+            _loadingText.text = "テクスチャ取得失敗"; // エラーメッセージに更新
+            yield return new WaitForSeconds(1.8f);
+
+            // タイトルに戻る
+            SceneManager.LoadScene("Title");
         }
 #endif
     }
