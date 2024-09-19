@@ -16,5 +16,16 @@ public class GachaData : ScriptableObject
 
     // ƒKƒ`ƒƒ‘‰ñ”
     public int totalGachaCount = 0;
+
+    public void SaveData()
+    {
+        PlayerPrefs.SetInt("TotalGachaCount", totalGachaCount);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadData()
+    {
+        totalGachaCount = PlayerPrefs.GetInt("TotalGachaCount", 0);
+    }
 }
 

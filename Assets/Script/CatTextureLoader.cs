@@ -46,6 +46,9 @@ public class CatTextureLoader : MonoBehaviour
 
     private void Start()
     {
+        // ゲーム開始時にデータを読み込む
+        _gachaData.LoadData();
+
         // 初期化時に残り回数の表示を更新
         UpdateCatRemainingCount();
     }
@@ -122,7 +125,7 @@ public class CatTextureLoader : MonoBehaviour
                 // ガチャ回数をインクリメント
                 _gachaData.totalGachaCount++;
 
-                UpdateCatRemainingCount();
+                _gachaData.SaveData(); // データを保存
 
                 // ...成功時の処理...
                 if (i == count - 1) // 最後の画像のロードが完了した場合
@@ -136,9 +139,6 @@ public class CatTextureLoader : MonoBehaviour
                     _tenButton.raycastTarget = true;
                     _changeButton.raycastTarget = true;
                     _probabilityButton.raycastTarget = true;
-
-                    // 残り回数の表示を更新
-                    UpdateCatRemainingCount();
                 }
 
                 Texture2D texture = DownloadHandlerTexture.GetContent(request);

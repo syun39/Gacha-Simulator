@@ -49,6 +49,9 @@ public class DogTextureLoader : MonoBehaviour
 
     private void Start()
     {
+        // ゲーム開始時にデータを読み込む
+        _gachaData.LoadData();
+
         // 初期化時に残り回数の表示を更新
         UpdateDogRemainingCount();
     }
@@ -132,7 +135,7 @@ public class DogTextureLoader : MonoBehaviour
                 // ガチャ回数をインクリメント
                 _gachaData.totalGachaCount++;
 
-                UpdateDogRemainingCount();
+                _gachaData.SaveData(); // データを保存
 
                 if (i == count - 1) // 最後の画像のロードが完了した場合
                 {
@@ -146,10 +149,6 @@ public class DogTextureLoader : MonoBehaviour
                     _tenButton.raycastTarget = true;
                     _changeButton.raycastTarget = true;
                     _probabilityButton.raycastTarget = true;
-
-
-                    // 残り回数の表示を更新
-                    UpdateDogRemainingCount();
                 }
             }
             else
@@ -196,6 +195,7 @@ public class DogTextureLoader : MonoBehaviour
 #if UNITY_EDITOR
             Debug.Log($"Image Width: {texture.width}");
             Debug.Log($"Image Height: {texture.height}");
+#endif
 
         }
         else
@@ -208,7 +208,7 @@ public class DogTextureLoader : MonoBehaviour
             // タイトルに戻る
             SceneManager.LoadScene("Title");
         }
-#endif
+
     }
 
     /// <summary>
@@ -217,7 +217,7 @@ public class DogTextureLoader : MonoBehaviour
     /// <param name="ssrCount">SSRの枚数</param>
     /// <param name="urCount">URの枚数</param>
     /// <returns>シーン名</returns>
-    private string RarityChangeScene(int ssrCount, int urCount)
+    string RarityChangeScene(int ssrCount, int urCount)
     {
         if (urCount > 0)
         {
@@ -240,7 +240,7 @@ public class DogTextureLoader : MonoBehaviour
     /// <summary>
     /// レア度をランダムに決定(累積確率)
     /// </summary>
-    private Rarity GetRandomRarity()
+    Rarity GetRandomRarity()
     {
         float total = 0f;
         foreach (var rate in _gachaSetting.rarityRates)
@@ -266,7 +266,7 @@ public class DogTextureLoader : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    private void UpdateDogRemainingCount()
+    void UpdateDogRemainingCount()
     {
         // 現在のガチャ回数が _ceilingCount の倍数からどれだけ離れているか
         int remainingToUR = _ceilingCount - (_gachaData.totalGachaCount % _ceilingCount);
