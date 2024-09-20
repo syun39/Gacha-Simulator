@@ -160,8 +160,14 @@ public class CatTextureLoader : MonoBehaviour
             {
                 Debug.LogError($"リクエスト失敗: {request.error}");
 
-                _loadingText.text = "ロード失敗"; // エラーメッセージに更新
-                yield return new WaitForSeconds(1.8f);
+                Animator animator = _loadingText.GetComponent<Animator>(); // テキストのアニメーターを取得
+                if (animator != null)
+                {
+                    animator.enabled = false;  // アニメーションを一時的に無効化
+                }
+                _loadingText.color = Color.red;  // テキストの色を赤に変更
+                _loadingText.text = "ロード失敗";  // エラーメッセージを設定
+                yield return new WaitForSeconds(1.5f);
 
                 // タイトルに戻る
                 SceneManager.LoadScene("Title");

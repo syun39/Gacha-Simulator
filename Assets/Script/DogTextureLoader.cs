@@ -155,8 +155,16 @@ public class DogTextureLoader : MonoBehaviour
             {
                 Debug.LogError($"画像取得失敗: {request.error}");
 
+                Animator animator = _loadingText.GetComponent<Animator>(); // テキストのアニメーターを取得
+
+                if (animator != null)
+                {
+                    animator.enabled = false;  // アニメーションを一時的に無効化
+                }
+                _loadingText.color = Color.red;
                 _loadingText.text = "ロード失敗"; // エラーメッセージに更新
-                yield return new WaitForSeconds(1.8f);
+                
+                yield return new WaitForSeconds(1.5f);
 
                 // タイトルに戻る
                 SceneManager.LoadScene("Title");
@@ -202,8 +210,16 @@ public class DogTextureLoader : MonoBehaviour
         {
             Debug.LogError($"テクスチャ取得失敗: {request.error}");
 
+            Animator animator = _loadingText.GetComponent<Animator>(); // テキストのアニメーターを取得
+
+            if (animator != null)
+            {
+                animator.enabled = false;  // アニメーションを一時的に無効化
+            }
+            _loadingText.color = Color.red;
             _loadingText.text = "テクスチャ取得失敗"; // エラーメッセージに更新
-            yield return new WaitForSeconds(1.8f);
+            
+            yield return new WaitForSeconds(1.5f);
 
             // タイトルに戻る
             SceneManager.LoadScene("Title");
