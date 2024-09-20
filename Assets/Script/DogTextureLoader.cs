@@ -106,17 +106,33 @@ public class DogTextureLoader : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
-            // レア度をランダムに決定
-            Rarity selectedRarity = GetRandomRarity();
+            Rarity selectedRarity;
 
-            // 天井システムの実装
-            if (_gachaData.totalGachaCount % _ceilingCount == _ceilingCount - 1) // _ceilingCountの倍数に1足りない状態なら
+            // レア度をランダムに決定
+            if (_gachaData.totalGachaCount % _ceilingCount == _ceilingCount - 1) // 余りが一致したとき
             {
-                // _ceilingCount 回ごとに必ずURを出す
+                // 天井の場合は必ずURを出す
                 selectedRarity = Rarity.UR;
+            }
+            else if (count == 10 && i == count - 1) // 10連ガチャの最後はSR以上
+            {
+                float randomValue = UnityEngine.Random.Range(0f, 100f);
+                if (randomValue < 1) // 1%でUR
+                {
+                    selectedRarity = Rarity.UR;
+                }
+                else if (randomValue < 4) // 3%でSSR
+                {
+                    selectedRarity = Rarity.SSR;
+                }
+                else // 残りの96%でSR
+                {
+                    selectedRarity = Rarity.SR;
+                }
             }
             else
             {
+                // 通常のガチャでレア度をランダムに決定
                 selectedRarity = GetRandomRarity();
             }
 
@@ -163,7 +179,7 @@ public class DogTextureLoader : MonoBehaviour
                 }
                 _loadingText.color = Color.red;
                 _loadingText.text = "ロード失敗"; // エラーメッセージに更新
-                
+
                 yield return new WaitForSeconds(1.5f);
 
                 // タイトルに戻る
@@ -218,7 +234,7 @@ public class DogTextureLoader : MonoBehaviour
             }
             _loadingText.color = Color.red;
             _loadingText.text = "テクスチャ取得失敗"; // エラーメッセージに更新
-            
+
             yield return new WaitForSeconds(1.5f);
 
             // タイトルに戻る

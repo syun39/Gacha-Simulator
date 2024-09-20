@@ -95,21 +95,35 @@ public class CatTextureLoader : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
-            // レア度をランダムに決定
-            Rarity selectedRarity = GetRandomRarity();
+            Rarity selectedRarity;
 
-            // 天井システムの実装
-            if (_gachaData.totalGachaCount % _ceilingCount == _ceilingCount - 1)
+            // レア度をランダムに決定
+            if (_gachaData.totalGachaCount % _ceilingCount == _ceilingCount - 1) // 余りが一致したとき
             {
-                // 200回ごとに必ずURを出す
+                // 天井の場合は必ずURを出す
                 selectedRarity = Rarity.UR;
+            }
+            else if (count == 10 && i == count - 1) // 10連ガチャの最後はSR以上
+            {
+                float randomValue = UnityEngine.Random.Range(0f, 100f);
+                if (randomValue < 1) // 1%でUR
+                {
+                    selectedRarity = Rarity.UR;
+                }
+                else if (randomValue < 4) // 3%でSSR
+                {
+                    selectedRarity = Rarity.SSR;
+                }
+                else // 残りの96%でSR
+                {
+                    selectedRarity = Rarity.SR;
+                }
             }
             else
             {
+                // 通常のガチャでレア度をランダムに決定
                 selectedRarity = GetRandomRarity();
             }
-
-            
 
 #if UNITY_EDITOR
             //Debug.Log($"排出されたレア度: {selectedRarity}");
