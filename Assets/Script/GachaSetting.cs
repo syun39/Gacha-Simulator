@@ -19,16 +19,20 @@ public class GachaSetting : ScriptableObject
     [Serializable]
     public class RarityRate
     {
-        public Rarity rarity;
+        public Rarity rarity; // ƒŒƒA“x
         public float rate; // ”ro—¦
     }
 
     // ”ro—¦‚ğİ’è
-    [SerializeField] public RarityRate[] rarityRates =
+    [SerializeField]
+    private RarityRate[] rarityRates =
     {
-        new RarityRate { rarity = Rarity.R, rate = 70f },
-        new RarityRate { rarity = Rarity.SR, rate = 26f },
-        new RarityRate { rarity = Rarity.SSR, rate = 3f },
-        new RarityRate { rarity = Rarity.UR, rate = 1f }
+        new RarityRate { rarity = Rarity.R, rate = 70f }, // R‚Ì”ro—¦
+        new RarityRate { rarity = Rarity.SR, rate = 26f }, // SR‚Ì”ro—¦
+        new RarityRate { rarity = Rarity.SSR, rate = 3f }, // SSR‚Ì”ro—¦
+        new RarityRate { rarity = Rarity.UR, rate = 1f } // UR‚Ì”ro—¦
     };
+
+    // ”ro—¦‚ğæ“¾‚·‚éƒvƒƒpƒeƒB
+    public RarityRate[] RarityRates => rarityRates;
 }

@@ -10,9 +10,10 @@ public class GachaDataManager : MonoBehaviour
 
     private void Awake()
     {
+        // インスタンスが存在しない場合
         if (Instance == null)
         {
-            Instance = this;
+            Instance = this; // シングルトンとして設定
             DontDestroyOnLoad(gameObject);
         }
         else

@@ -38,18 +38,19 @@ public class SceneChange : MonoBehaviour
     {
         _isInvalid = true; // エンターキー有効
 
+        // URシーンなら
         if (SceneManager.GetActiveScene().name == "UR Scene")
         {
             _panel.SetActive(false);
             _image.SetActive(false);
             _isURScene = true;
         }
-        else if (SceneManager.GetActiveScene().name == "SSR Two Scene")
+        else if (SceneManager.GetActiveScene().name == "SSR Two Scene") // SSRTwoSceneシーンなら
         {
             _mikuRin.SetActive(false);
             _isSSRTwoScene = true;
         }
-        else if (SceneManager.GetActiveScene().name == "Result Scene")
+        else if (SceneManager.GetActiveScene().name == "Result Scene") // Resultシーンなら
         {
             _isResultScene = true;
         }
@@ -62,11 +63,11 @@ public class SceneChange : MonoBehaviour
         {
             if (_isURScene)
             {
-                StartCoroutine(URTransition());
+                StartCoroutine(URChangeScene());
             }
             else if (_isSSRTwoScene)
             {
-                StartCoroutine(SSRTwoTransition());
+                StartCoroutine(SSRTwoChangeScene());
             }
             else if (_isResultScene)
             {
@@ -84,47 +85,46 @@ public class SceneChange : MonoBehaviour
     /// </summary>
     public void ChangeScene()
     {
-        if(_nextScene != null)
+        if (_nextScene != null)
         {
-            // 指定されたシーンに遷移する
+            // シーンに遷移する
             SceneManager.LoadScene(_nextScene);
         }
-       
+
     }
 
     /// <summary>
     /// シーン遷移を遅らせる場合
     /// </summary>
-    /// <param name="sceneName"></param>
     public void ChangeTitleScene(string sceneName)
     {
         StartCoroutine(WaitLoadScene(sceneName));
     }
 
     /// <summary>
-    /// 
+    /// 待機してからシーン遷移
     /// </summary>
-    private IEnumerator WaitLoadScene(string sceneName)
+    IEnumerator WaitLoadScene(string sceneName)
     {
         yield return new WaitForSeconds(0.4f);
-        SceneManager.LoadScene(sceneName);
+        SceneManager.LoadScene(sceneName); // シーンに遷移する
     }
 
     /// <summary>
     /// SSR2枚以上の時のシーン遷移
     /// </summary>
-    IEnumerator SSRTwoTransition()
+    IEnumerator SSRTwoChangeScene()
     {
-        _mikuRin.SetActive(true);
+        _mikuRin?.SetActive(true);  // イラストを表示
         _isInvalid = false; // エンターキーを無効
-        yield return new WaitForSeconds(1.7f);
+        yield return new WaitForSeconds(1.7f); // 待機
         ChangeScene();
     }
 
     /// <summary>
     /// UR1枚以上
     /// </summary>
-    IEnumerator URTransition()
+    IEnumerator URChangeScene()
     {
         // BGM再生中なら止める
         if (_bgmSource?.isPlaying == true)
@@ -151,6 +151,7 @@ public class SceneChange : MonoBehaviour
         // パネルを表示
         _panel?.SetActive(true);
 
+        //イラストを非表示
         _image?.SetActive(false);
 
         // SEが鳴り終わるまで待機

@@ -4,11 +4,10 @@ using UnityEngine.UI;
 
 public class GachaResultDisplay : MonoBehaviour
 {
-
     // GachaData
     [SerializeField] GachaData _gachaData;
     [SerializeField] Image _gachaImage; // 画像表示
-    [SerializeField] private RarityText _rarityTextComponent; // レア度の表示
+    [SerializeField] RarityText _rarityTextComponent; // レア度の表示
 
     [SerializeField] Text _currentImageIndexText; // 現在の画像が何枚目かを表示するテキスト
 
@@ -17,7 +16,7 @@ public class GachaResultDisplay : MonoBehaviour
 
     void Start()
     {
-        // 最初の画像を表示
+        // ガチャ結果が存在していたら
         if (_gachaData.gachaResults.Length > 0)
         {
             DisplayResult(_currentImageIndex); // 初期画像表示
@@ -52,11 +51,11 @@ public class GachaResultDisplay : MonoBehaviour
         // インデックスの結果を取得
         var result = _gachaData.gachaResults[index];
 
-        // テクスチャをImageに適用
+        // テクスチャをSpriteに変更
         Sprite newSprite = Sprite.Create(result.texture, new Rect(0, 0, result.texture.width, result.texture.height), new Vector2(0.5f, 0.5f));
         _gachaImage.sprite = newSprite;
 
-        // レア度をRarityText コンポーネントに適用
+        // レア度を表示
         _rarityTextComponent.SetRarity(result.rarity);
 
         // 現在の画像が何枚目かを表示

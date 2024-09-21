@@ -1,13 +1,15 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class RarityText : MonoBehaviour
 {
-    [SerializeField] private GameObject _rarityTextR;
-    [SerializeField] private GameObject _rarityTextSR;
-    [SerializeField] private GameObject _rarityTextSSR;
-    [SerializeField] private GameObject _rarityTextUR;
+    [SerializeField] private GameObject _rarityTextR; // Rテキスト
+    [SerializeField] private GameObject _rarityTextSR; // SRテキスト
+    [SerializeField] private GameObject _rarityTextSSR; // SSRテキスト
+    [SerializeField] private GameObject _rarityTextUR; // URテキスト
 
+    /// <summary>
+    /// レアリティに応じて該当するテキストを表示
+    /// </summary>
     public void SetRarity(Rarity rarity)
     {
         // 全てのレアリティテキストを非表示にする
@@ -17,20 +19,21 @@ public class RarityText : MonoBehaviour
         _rarityTextUR.SetActive(false);
 
         // 選択されたレアリティのテキストを表示する
-        switch (rarity)
+        if (rarity == Rarity.R)
         {
-            case Rarity.R:
-                _rarityTextR.SetActive(true);
-                break;
-            case Rarity.SR:
-                _rarityTextSR.SetActive(true);
-                break;
-            case Rarity.SSR:
-                _rarityTextSSR.SetActive(true);
-                break;
-            case Rarity.UR:
-                _rarityTextUR.SetActive(true);
-                break;
+            _rarityTextR.SetActive(true); // Rを表示
+        }
+        else if (rarity == Rarity.SR)
+        {
+            _rarityTextSR.SetActive(true); // SRを表示
+        }
+        else if (rarity == Rarity.SSR)
+        {
+            _rarityTextSSR.SetActive(true); // SSRを表示
+        }
+        else if (rarity == Rarity.UR)
+        {
+            _rarityTextUR.SetActive(true); // URを表示
         }
     }
 }

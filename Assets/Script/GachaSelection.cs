@@ -11,7 +11,7 @@ public class GachaSelection : MonoBehaviour
     }
 
     /// <summary>
-    /// Œ¢‚ÌƒKƒ`ƒƒ Canvas ‚ð•\Ž¦
+    /// Œ¢‚ÌƒKƒ`ƒƒCanvas‚ð•\Ž¦
     /// </summary>
     public void ShowDogGachaCanvas()
     {
@@ -27,7 +27,7 @@ public class GachaSelection : MonoBehaviour
     }
 
     /// <summary>
-    /// ”L‚ÌƒKƒ`ƒƒ Canvas ‚ð•\Ž¦
+    /// ”L‚ÌƒKƒ`ƒƒCanvas‚ð•\Ž¦
     /// </summary>
     public void ShowCatGachaCanvas()
     {

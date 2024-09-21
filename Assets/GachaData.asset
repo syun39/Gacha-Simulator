@@ -14,14 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gachaResults:
   - texture: {fileID: 0}
+    rarity: 0
+  - texture: {fileID: 0}
+    rarity: 1
+  - texture: {fileID: 0}
+    rarity: 0
+  - texture: {fileID: 0}
+    rarity: 0
+  - texture: {fileID: 0}
     rarity: 2
   - texture: {fileID: 0}
     rarity: 0
   - texture: {fileID: 0}
-    rarity: 0
-  - texture: {fileID: 0}
-    rarity: 0
-  - texture: {fileID: 0}
     rarity: 1
   - texture: {fileID: 0}
     rarity: 0
@@ -29,8 +33,4 @@ MonoBehaviour:
     rarity: 0
   - texture: {fileID: 0}
     rarity: 1
-  - texture: {fileID: 0}
-    rarity: 0
-  - texture: {fileID: 0}
-    rarity: 3
   totalGachaCount: 0
