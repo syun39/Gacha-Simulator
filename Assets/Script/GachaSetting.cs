@@ -25,7 +25,7 @@ public class GachaSetting : ScriptableObject
 
     // ”ro—¦‚ğİ’è
     [SerializeField]
-    private RarityRate[] rarityRates =
+    RarityRate[] rarityRates =
     {
         new RarityRate { rarity = Rarity.R, rate = 70f }, // R‚Ì”ro—¦
         new RarityRate { rarity = Rarity.SR, rate = 26f }, // SR‚Ì”ro—¦

@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class RarityText : MonoBehaviour
 {
-    [SerializeField] private GameObject _rarityTextR; // Rテキスト
-    [SerializeField] private GameObject _rarityTextSR; // SRテキスト
-    [SerializeField] private GameObject _rarityTextSSR; // SSRテキスト
-    [SerializeField] private GameObject _rarityTextUR; // URテキスト
+    [SerializeField] GameObject _rarityTextR; // Rテキスト
+    [SerializeField] GameObject _rarityTextSR; // SRテキスト
+    [SerializeField] GameObject _rarityTextSSR; // SSRテキスト
+    [SerializeField] GameObject _rarityTextUR; // URテキスト
 
     /// <summary>
     /// レアリティに応じて該当するテキストを表示

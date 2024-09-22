@@ -49,7 +49,7 @@ public class DogTextureLoader : MonoBehaviour
     private void Start()
     {
         // ゲーム開始時にデータを読み込む
-        //_gachaData.LoadData();
+        _gachaData.LoadData();
 
         // 残り回数の表示を更新
         UpdateDogRemainingCount();
@@ -101,14 +101,14 @@ public class DogTextureLoader : MonoBehaviour
         _loadingText.gameObject.SetActive(true); // ローディングテキストを表示
 
         // GachaData 内の結果配列を初期化
-        _gachaData.gachaResults = new GachaData.GachaResult[count];
+        _gachaData.GachaResults = new GachaData.GachaResult[count];
 
         for (int i = 0; i < count; i++)
         {
             Rarity selectedRarity; // レア度選択
 
             // レア度をランダムに決定
-            if (_gachaData.totalGachaCount % _ceilingCount == _ceilingCount - 1) // 余りが一致したとき
+            if (_gachaData.TotalGachaCount % _ceilingCount == _ceilingCount - 1) // 余りが一致したとき
             {
                 // 天井の場合は必ずURを出す
                 selectedRarity = Rarity.UR;
@@ -147,11 +147,6 @@ public class DogTextureLoader : MonoBehaviour
                 ResponseData response = JsonUtility.FromJson<ResponseData>(jsonResponse);
                 yield return StartCoroutine(GetTexture(response.message, i, selectedRarity));
 
-                // ガチャ回数をインクリメント
-                _gachaData.totalGachaCount++;
-
-                //_gachaData.SaveData(); // データを保存
-
                 if (i == count - 1) // 最後の画像のロードが完了した場合
                 {
                     _loadingText.gameObject.SetActive(false); // ローディングテキストを非表示に
@@ -168,7 +163,7 @@ public class DogTextureLoader : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"画像取得失敗: {request.error}");
+                //Debug.LogError($"画像取得失敗: {request.error}");
 
                 Animator animator = _loadingText.GetComponent<Animator>(); // テキストのアニメーターを取得
 
@@ -187,14 +182,19 @@ public class DogTextureLoader : MonoBehaviour
         }
 
         // ガチャ結果の取得が完了
-        Debug.Log("ガチャ結果の取得が完了しました");
+        //Debug.Log("ガチャ結果の取得が完了しました");
+
+        // ガチャ回数をインクリメント
+        _gachaData.TotalGachaCount += count;
+
+        _gachaData.SaveData(); // データを保存
 
         // レア度のカウント
         int ssrCount = 0;
         int urCount = 0;
 
         // ガチャ結果をループしてレア度をカウント
-        foreach (var result in _gachaData.gachaResults)
+        foreach (var result in _gachaData.GachaResults)
         {
             if (result.rarity == Rarity.SSR)
             {
@@ -222,21 +222,19 @@ public class DogTextureLoader : MonoBehaviour
             Texture2D texture = DownloadHandlerTexture.GetContent(request);
 
             // GachaData に画像とレア度を保存
-            _gachaData.gachaResults[index] = new GachaData.GachaResult
+            _gachaData.GachaResults[index] = new GachaData.GachaResult
             {
                 texture = texture,
                 rarity = rarity
             };
 
-#if UNITY_EDITOR
             //Debug.Log($"Image Width: {texture.width}");
             //Debug.Log($"Image Height: {texture.height}");
-#endif
 
         }
         else
         {
-            Debug.LogError($"テクスチャ取得失敗: {request.error}");
+            //Debug.LogError($"テクスチャ取得失敗: {request.error}");
 
             Animator animator = _loadingText.GetComponent<Animator>(); // テキストのアニメーターを取得
 
@@ -317,7 +315,7 @@ public class DogTextureLoader : MonoBehaviour
     void UpdateDogRemainingCount()
     {
         // 現在のガチャ回数を求める _ceilingCount - 余り
-        int remainingToUR = _ceilingCount - (_gachaData.totalGachaCount % _ceilingCount);
+        int remainingToUR = _ceilingCount - (_gachaData.TotalGachaCount % _ceilingCount);
         _remainingText.text = $"残り {remainingToUR}回";
     }
 }

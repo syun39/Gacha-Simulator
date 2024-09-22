@@ -11,7 +11,7 @@ public class GachaSelection : MonoBehaviour
     }
 
     /// <summary>
-    /// 犬のガチャCanvasを表示
+    /// 犬のガチャCanvasを表示(ボタンで使用)
     /// </summary>
     public void ShowDogGachaCanvas()
     {
@@ -27,7 +27,7 @@ public class GachaSelection : MonoBehaviour
     }
 
     /// <summary>
-    /// 猫のガチャCanvasを表示
+    /// 猫のガチャCanvasを表示(ボタンで使用)
     /// </summary>
     public void ShowCatGachaCanvas()
     {

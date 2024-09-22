@@ -5,24 +5,35 @@ using UnityEngine;
 public class GachaData : ScriptableObject
 {
     // 画像とレア度をセットで保存
-    [Serializable] public class GachaResult
+    [Serializable]
+    public class GachaResult
     {
         public Texture2D texture; // 画像
         public Rarity rarity;     // レア度
     }
 
     // ガチャ結果の配列
-    public GachaResult[] gachaResults;
+    private GachaResult[] _gachaResults;
+
+    // プロパティ
+    public GachaResult[] GachaResults { get; set; }
 
     // ガチャ総回数
-    public int totalGachaCount = 0;
+    [SerializeField] int _totalGachaCount = 0;
+
+    // プロパティ
+    public int TotalGachaCount
+    {
+        get => _totalGachaCount;
+        set => _totalGachaCount = value;
+    }
 
     /// <summary>
     /// ガチャ総回数保存
     /// </summary>
     public void SaveData()
     {
-        PlayerPrefs.SetInt("TotalGachaCount", totalGachaCount);
+        PlayerPrefs.SetInt("TotalGachaCount", _totalGachaCount);
         PlayerPrefs.Save();
     }
 
@@ -31,7 +42,7 @@ public class GachaData : ScriptableObject
     /// </summary>
     public void LoadData()
     {
-        totalGachaCount = PlayerPrefs.GetInt("TotalGachaCount", 0);
+        _totalGachaCount = PlayerPrefs.GetInt("TotalGachaCount", 0);
     }
 }
 

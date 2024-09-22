@@ -13,40 +13,40 @@ public class CatTextureLoader : MonoBehaviour
     [SerializeField] GachaData _gachaData;
 
     // 排出率
-    [SerializeField] private GachaSetting _gachaSetting;
+    [SerializeField] GachaSetting _gachaSetting;
 
     [Tooltip("ガチャの天井")]
     [SerializeField] int _ceilingCount = 200; // 天井
 
     [SerializeField] Text _loadingText; // ローディングテキストの追加
 
-    [SerializeField] private Image _singleButton; // 単発ガチャボタン
+    [SerializeField] Image _singleButton; // 単発ガチャボタン
 
-    [SerializeField] private Image _tenButton; // 10連ガチャボタン
+    [SerializeField] Image _tenButton; // 10連ガチャボタン
 
-    [SerializeField] private Image _changeButton; // ガチャ切り替えボタン
+    [SerializeField] Image _changeButton; // ガチャ切り替えボタン
 
-    [SerializeField] private Image _probabilityButton; // 確率表示ボタン
+    [SerializeField] Image _probabilityButton; // 確率表示ボタン
 
-    [SerializeField] private Text _remainingText; // 天井まで残り何回か
+    [SerializeField] Text _remainingText; // 天井まで残り何回か
 
-    [SerializeField] private Text _text; // UR確定までと表示
+    [SerializeField] Text _text; // UR確定までと表示
 
     // レア度ごとのシーン名
-    [SerializeField] private string _normalScene = ""; // 爆死シーン
+    [SerializeField] string _normalScene = ""; // 爆死シーン
 
-    [SerializeField] private string _oneSSRScene = ""; // SSR確定シーン
+    [SerializeField] string _oneSSRScene = ""; // SSR確定シーン
 
-    [SerializeField] private string _moreSSRScene = "";// SSR2枚以上シーン
+    [SerializeField] string _moreSSRScene = "";// SSR2枚以上シーン
 
-    [SerializeField] private string _oneURScene = ""; // UR確定シーン
+    [SerializeField] string _oneURScene = ""; // UR確定シーン
 
     private bool _isGachaInProgress = false; // ガチャが進行中か
 
     private void Start()
     {
         // ゲーム開始時にデータを読み込む
-        //_gachaData.LoadData();
+        _gachaData.LoadData();
 
         // 残り回数の表示を更新
         UpdateCatRemainingCount();
@@ -96,14 +96,14 @@ public class CatTextureLoader : MonoBehaviour
         _loadingText.gameObject.SetActive(true); // ローディングテキストを表示
 
         // GachaData 内の結果配列を初期化
-        _gachaData.gachaResults = new GachaData.GachaResult[count];
+        _gachaData.GachaResults = new GachaData.GachaResult[count];
 
         for (int i = 0; i < count; i++)
         {
             Rarity selectedRarity; // レア度選択
 
             // レア度をランダムに決定
-            if (_gachaData.totalGachaCount % _ceilingCount == _ceilingCount - 1) // 余りが一致したとき
+            if (_gachaData.TotalGachaCount % _ceilingCount == _ceilingCount - 1) // 余りが一致したとき
             {
                 // 天井の場合は必ずURを出す
                 selectedRarity = Rarity.UR;
@@ -130,9 +130,7 @@ public class CatTextureLoader : MonoBehaviour
                 selectedRarity = GetRandomRarity();
             }
 
-#if UNITY_EDITOR
             //Debug.Log($"排出されたレア度: {selectedRarity}");
-#endif
 
             UnityWebRequest request = UnityWebRequestTexture.GetTexture(_urlAPI);
 
@@ -141,11 +139,6 @@ public class CatTextureLoader : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                // ガチャ回数をインクリメント
-                _gachaData.totalGachaCount++;
-
-                //_gachaData.SaveData(); // データを保存
-
                 // ...成功時の処理...
                 if (i == count - 1) // 最後の画像のロードが完了した場合
                 {
@@ -163,14 +156,11 @@ public class CatTextureLoader : MonoBehaviour
 
                 Texture2D texture = DownloadHandlerTexture.GetContent(request);
 
-                // Editor 内でのみ画像のサイズをログ出力
-#if UNITY_EDITOR
                 //Debug.Log($"Image Width: {texture.width}");
                 //Debug.Log($"Image Height: {texture.height}");
-#endif
 
                 // 取得したテクスチャとレア度を GachaData に保存
-                _gachaData.gachaResults[i] = new GachaData.GachaResult
+                _gachaData.GachaResults[i] = new GachaData.GachaResult
                 {
                     texture = texture,
                     rarity = selectedRarity
@@ -178,7 +168,7 @@ public class CatTextureLoader : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"リクエスト失敗: {request.error}");
+                //Debug.LogError($"リクエスト失敗: {request.error}");
 
                 Animator animator = _loadingText.GetComponent<Animator>(); // テキストのアニメーターを取得
                 if (animator != null)
@@ -197,14 +187,19 @@ public class CatTextureLoader : MonoBehaviour
         _loadingText.gameObject.SetActive(false);
 
         // ガチャ結果の取得が完了
-        Debug.Log("ガチャ結果の取得が完了しました");
+        //Debug.Log("ガチャ結果の取得が完了しました");
+
+        // ガチャ回数をインクリメント
+        _gachaData.TotalGachaCount += count;
+
+        _gachaData.SaveData(); // データを保存
 
         // レア度のカウント
         int ssrCount = 0;
         int urCount = 0;
 
         // ガチャ結果をループしてレア度をカウント
-        foreach (var result in _gachaData.gachaResults)
+        foreach (var result in _gachaData.GachaResults)
         {
             if (result.rarity == Rarity.SSR)
             {
@@ -283,7 +278,7 @@ public class CatTextureLoader : MonoBehaviour
     void UpdateCatRemainingCount()
     {
         // 現在のガチャ回数を求める _ceilingCount - 余り
-        int remainingToUR = _ceilingCount - (_gachaData.totalGachaCount % _ceilingCount);
+        int remainingToUR = _ceilingCount - (_gachaData.TotalGachaCount % _ceilingCount);
         _remainingText.text = $"残り {remainingToUR}回";
     }
 }

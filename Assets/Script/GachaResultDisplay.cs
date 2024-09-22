@@ -17,7 +17,7 @@ public class GachaResultDisplay : MonoBehaviour
     void Start()
     {
         // ガチャ結果が存在していたら
-        if (_gachaData.gachaResults.Length > 0)
+        if (_gachaData.GachaResults.Length > 0)
         {
             DisplayResult(_currentImageIndex); // 初期画像表示
         }
@@ -29,7 +29,7 @@ public class GachaResultDisplay : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return))
         {
             // 現在の画像インデックスが最後の画像のインデックスより小さい場合
-            if (_currentImageIndex < _gachaData.gachaResults.Length - 1)
+            if (_currentImageIndex < _gachaData.GachaResults.Length - 1)
             {
                 _currentImageIndex++;
                 DisplayResult(_currentImageIndex); // 次の画像を表示
@@ -49,7 +49,7 @@ public class GachaResultDisplay : MonoBehaviour
     void DisplayResult(int index)
     {
         // インデックスの結果を取得
-        var result = _gachaData.gachaResults[index];
+        var result = _gachaData.GachaResults[index];
 
         // テクスチャをSpriteに変更
         Sprite newSprite = Sprite.Create(result.texture, new Rect(0, 0, result.texture.width, result.texture.height), new Vector2(0.5f, 0.5f));

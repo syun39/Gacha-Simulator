@@ -4,11 +4,11 @@ using UnityEngine.UI;
 public class RarityCount : MonoBehaviour
 {
     // GachaData
-    [SerializeField] private GachaData _gachaData;
-    [SerializeField] private Text _rCountText; // Rのカウントを表示するテキス
-    [SerializeField] private Text _srCountText; // SRのカウントを表示するテキスト
-    [SerializeField] private Text _ssrCountText; // SSRのカウントを表示するテキスト
-    [SerializeField] private Text _urCountText; // URのカウントを表示するテキスト
+    [SerializeField] GachaData _gachaData;
+    [SerializeField] Text _rCountText; // Rのカウントを表示するテキス
+    [SerializeField] Text _srCountText; // SRのカウントを表示するテキスト
+    [SerializeField] Text _ssrCountText; // SSRのカウントを表示するテキスト
+    [SerializeField] Text _urCountText; // URのカウントを表示するテキスト
 
     private void Start()
     {
@@ -27,7 +27,7 @@ public class RarityCount : MonoBehaviour
         int urCount = 0;
 
         // ガチャ結果をループしてレア度ごとにカウントする
-        foreach (var result in _gachaData.gachaResults)
+        foreach (var result in _gachaData.GachaResults)
         {
             if (result.rarity == Rarity.R) // レア度がRだったら
             {

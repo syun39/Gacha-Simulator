@@ -6,7 +6,7 @@ public class GachaDataManager : MonoBehaviour
     public static GachaDataManager Instance { get; private set; }
 
     // GachaData 
-    [SerializeField] private GachaData _gachaData;
+    [SerializeField] GachaData _gachaData;
 
     private void Awake()
     {

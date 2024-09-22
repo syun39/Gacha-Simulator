@@ -5,22 +5,22 @@ using UnityEngine.SceneManagement;
 public class SceneChange : MonoBehaviour
 {
     [Tooltip("遷移先のシーン名")]
-    [SerializeField] private string _nextScene = null;
+    [SerializeField] string _nextScene = null;
 
     [Tooltip("BGMのAudioSource"), Header("URシーンのみアタッチ")]
-    [SerializeField] private AudioSource _bgmSource = null;
+    [SerializeField] AudioSource _bgmSource = null;
 
     [Tooltip("SEのAudioSource"), Header("URシーンのみアタッチ")]
-    [SerializeField] private AudioSource _seSource = null;
+    [SerializeField] AudioSource _seSource = null;
 
     [Tooltip("SEが鳴ったら表示するパネル"), Header("URシーンのみアタッチ")]
-    [SerializeField] private GameObject _panel = null;
+    [SerializeField] GameObject _panel = null;
 
     [Tooltip("SEが鳴ったら表示するイラスト"), Header("URシーンのみアタッチ")]
-    [SerializeField] private GameObject _image = null;
+    [SerializeField] GameObject _image = null;
 
     [Tooltip("エンターを押されたら表示するイラスト"), Header("SSRTwoシーンのみアタッチ")]
-    [SerializeField] private GameObject _mikuRin = null;
+    [SerializeField] GameObject _mikuRin = null;
 
     // エンターキーを無効にするかどうか
     private bool _isInvalid = false;
