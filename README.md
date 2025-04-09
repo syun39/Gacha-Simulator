@@ -12,13 +12,8 @@
 - **ジャンル**: カジュアル
 - **ターゲット**: 全てのプレイヤー
 
-## ゲーム画面
-
-![ガチャ画面]("C:\Users\vantan\Pictures\Screenshots\犬ガチャ.png")
-
-
 ## プレイ方法
 
-このゲームは、Unityで開発されており、以下の手順でプレイできます。
+このゲームは、Unityで開発されており、以下のリンク先でプレイできます。
 
-(https://unityroom.com/games/gachasimulator)
+https://unityroom.com/games/gachasimulator
