@@ -21,6 +21,4 @@
 
 このゲームは、Unityで開発されており、以下の手順でプレイできます。
 
-```bash
-# このリンクからゲーム開始
 (https://unityroom.com/games/gachasimulator)
