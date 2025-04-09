@@ -22,4 +22,4 @@
 
 このゲームは、Unityで開発されており、以下のリンク先でプレイできます。
 
-[GachaSimulator](https://unityroom.com/games/gachasimulator)
+**[GachaSimulator](https://unityroom.com/games/gachasimulator)**
