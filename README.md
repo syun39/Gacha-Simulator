@@ -14,7 +14,9 @@
 
 ## ゲーム画像
 
-[![ガチャ画像](Assets/Image/犬ガチャ.png)]
+![ガチャ画像](Assets/Image/犬ガチャ.png)
+
+![ガチャ画像](Assets/Image/猫ガチャ.png)
 
 ## プレイ方法
 
