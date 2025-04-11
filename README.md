@@ -24,6 +24,6 @@
 
 **[GachaSimulator](https://unityroom.com/games/gachasimulator)**
 
-##　スクリプト
+## スクリプト
 
 [スクリプト](Assets/Script)
