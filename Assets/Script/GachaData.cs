@@ -12,9 +12,6 @@ public class GachaData : ScriptableObject
         public Rarity rarity;     // レア度
     }
 
-    // ガチャ結果の配列
-    private GachaResult[] _gachaResults;
-
     // プロパティ
     public GachaResult[] GachaResults { get; set; }
 
