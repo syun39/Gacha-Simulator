@@ -112,6 +112,7 @@ public class DogTextureLoader : MonoBehaviour
             {
                 // 天井の場合は必ずURを出す
                 selectedRarity = Rarity.UR;
+                Debug.Log("UR");
             }
             else if (count == 10 && i == count - 1) // 10連ガチャの最後はSR以上
             {
@@ -188,6 +189,8 @@ public class DogTextureLoader : MonoBehaviour
         _gachaData.TotalGachaCount += count;
 
         _gachaData.SaveData(); // データを保存
+
+        Debug.Log(_gachaData.TotalGachaCount);
 
         // レア度のカウント
         int ssrCount = 0;

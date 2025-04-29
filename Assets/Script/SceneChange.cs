@@ -5,22 +5,25 @@ using UnityEngine.SceneManagement;
 public class SceneChange : MonoBehaviour
 {
     [Tooltip("遷移先のシーン名")]
-    [SerializeField] string _nextScene = null;
+    [SerializeField] private string _nextScene = null;
+
+    // ガチャ演出をスキップ
+    [SerializeField] private string _skipScene = null;
 
     [Tooltip("BGMのAudioSource"), Header("URシーンのみアタッチ")]
-    [SerializeField] AudioSource _bgmSource = null;
+    [SerializeField] private AudioSource _bgmSource = null;
 
     [Tooltip("SEのAudioSource"), Header("URシーンのみアタッチ")]
-    [SerializeField] AudioSource _seSource = null;
+    [SerializeField] private AudioSource _seSource = null;
 
     [Tooltip("SEが鳴ったら表示するパネル"), Header("URシーンのみアタッチ")]
-    [SerializeField] GameObject _panel = null;
+    [SerializeField] private GameObject _panel = null;
 
     [Tooltip("SEが鳴ったら表示するイラスト"), Header("URシーンのみアタッチ")]
-    [SerializeField] GameObject _image = null;
+    [SerializeField] private GameObject _image = null;
 
     [Tooltip("エンターを押されたら表示するイラスト"), Header("SSRTwoシーンのみアタッチ")]
-    [SerializeField] GameObject _mikuRin = null;
+    [SerializeField] private GameObject _mikuRin = null;
 
     // エンターキーを無効にするかどうか
     private bool _isInvalid = false;
@@ -28,11 +31,17 @@ public class SceneChange : MonoBehaviour
     // URシーンかどうか
     private bool _isURScene = false;
 
-    // SSRシーンかどうか
+    // SSR2枚シーンかどうか
     private bool _isSSRTwoScene = false;
 
+    // SSRシーンかどうか
+    private bool _isSSRScene = false;
+
     // Resultシーンかどうか
-    private bool _isResultScene = false;
+    //private bool _isResultScene = false;
+
+    // 爆死シーンかどうか
+    private bool _isNormalScene = false; 
 
     private void Start()
     {
@@ -50,14 +59,25 @@ public class SceneChange : MonoBehaviour
             _mikuRin.SetActive(false);
             _isSSRTwoScene = true;
         }
-        else if (SceneManager.GetActiveScene().name == "Result Scene") // Resultシーンなら
+        //else if (SceneManager.GetActiveScene().name == "Result Scene") // Resultシーンなら
+        //{
+        //    _isResultScene = true;
+        //}
+        else if (SceneManager.GetActiveScene().name == "Normal Scene" || 
+                 SceneManager.GetActiveScene().name == "SSR Scene")// 爆死シーンとSSRシーンなら
         {
-            _isResultScene = true;
+            _isNormalScene = true;
+            _isSSRScene = true;
         }
     }
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            SkipScene();
+        }
+
         // エンターキーが押されたら
         if (_isInvalid && Input.GetKeyDown(KeyCode.Return))
         {
@@ -69,11 +89,11 @@ public class SceneChange : MonoBehaviour
             {
                 StartCoroutine(SSRTwoChangeScene());
             }
-            else if (_isResultScene)
-            {
-                return;
-            }
-            else
+            //else if (_isResultScene)
+            //{
+            //    return;
+            //}
+            else if (_isNormalScene)
             {
                 ChangeScene();
             }
@@ -90,7 +110,18 @@ public class SceneChange : MonoBehaviour
             // シーンに遷移する
             SceneManager.LoadScene(_nextScene);
         }
+    }
 
+    /// <summary>
+    /// 演出スキップ
+    /// </summary>
+    public void SkipScene()
+    {
+        if (_skipScene != null)
+        {
+            // シーンに遷移する
+            SceneManager.LoadScene(_skipScene);
+        }
     }
 
     /// <summary>
