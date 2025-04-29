@@ -280,7 +280,7 @@ public class DogTextureLoader : MonoBehaviour
     }
 
     /// <summary>
-    /// レア度をランダムに決定(累積確率)
+    /// レア度をランダムに決定(重み付きの確率抽選)
     /// </summary>
     Rarity GetRandomRarity()
     {

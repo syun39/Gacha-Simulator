@@ -29,4 +29,22 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Result Scene.unity
     guid: 8fed47c561574c6488592cb841bb05cc
+  - enabled: 0
+    path: Assets/Scenes/Gacha Main Scene Phone.unity
+    guid: 921910aadc8263346ba5e97cf74ce413
+  - enabled: 0
+    path: Assets/Scenes/Gacha Select Scene  Phone.unity
+    guid: 7632c545b227f5b4bb3a93c2aa41eba4
+  - enabled: 0
+    path: Assets/Scenes/Normal Scene  Phone.unity
+    guid: 47bedf517a86a7b429f3786de0881412
+  - enabled: 0
+    path: Assets/Scenes/SSR Scene  Phone.unity
+    guid: e204760bc5ff4bd44b648809f7562348
+  - enabled: 0
+    path: Assets/Scenes/SSR Two Scene  Phone.unity
+    guid: 0942dfffbdaabc847847c2ee828bbb39
+  - enabled: 0
+    path: Assets/Scenes/UR Scene  Phone.unity
+    guid: 3e4fc4477aea2f649b1c6402b9e3e955
   m_configObjects: {}
