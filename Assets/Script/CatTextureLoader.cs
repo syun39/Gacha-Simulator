@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -98,36 +99,26 @@ public class CatTextureLoader : MonoBehaviour
         // GachaData 内の結果配列を初期化
         _gachaData.GachaResults = new GachaData.GachaResult[count];
 
+
+
         for (int i = 0; i < count; i++)
         {
-            Rarity selectedRarity; // レア度選択
+            Rarity selectedRarity;
 
-            // レア度をランダムに決定
-            if (_gachaData.TotalGachaCount % _ceilingCount == _ceilingCount - 1) // 余りが一致したとき
+            // 1回ごとにカウントをインクリメント
+            int currentGachaCount = _gachaData.TotalGachaCount + 1;
+
+            if (currentGachaCount % _ceilingCount == 0)
             {
-                // 天井の場合は必ずURを出す
                 selectedRarity = Rarity.UR;
-                Debug.Log("UR");
+                Debug.Log("UR（天井）");
             }
-            else if (count == 10 && i == count - 1) // 10連ガチャの最後はSR以上
+            else if (count == 10 && i == count - 1)
             {
-                float randomValue = UnityEngine.Random.Range(0f, 100f);
-                if (randomValue < 1) // 1%でUR
-                {
-                    selectedRarity = Rarity.UR;
-                }
-                else if (randomValue < 4) // 3%でSSR
-                {
-                    selectedRarity = Rarity.SSR;
-                }
-                else // 残りの96%でSR
-                {
-                    selectedRarity = Rarity.SR;
-                }
+                selectedRarity = GetRandomRarityAboveSR();
             }
             else
             {
-                // 通常のガチャでレア度をランダムに決定
                 selectedRarity = GetRandomRarity();
             }
 
@@ -183,15 +174,13 @@ public class CatTextureLoader : MonoBehaviour
                 // タイトルに戻る
                 SceneManager.LoadScene("Title");
             }
+            _gachaData.TotalGachaCount++; // 個別に1ずつ加算
         }
 
         _loadingText.gameObject.SetActive(false);
 
         // ガチャ結果の取得が完了
         //Debug.Log("ガチャ結果の取得が完了しました");
-
-        // ガチャ回数をインクリメント
-        _gachaData.TotalGachaCount += count;
 
         _gachaData.SaveData(); // データを保存
 
@@ -273,6 +262,35 @@ public class CatTextureLoader : MonoBehaviour
         // SSRは96.1から99
         // URは99.1から100
         return Rarity.R; // デフォルトは R
+    }
+
+    /// <summary>
+    /// SR以上からランダムにレア度を決定
+    /// </summary>
+    Rarity GetRandomRarityAboveSR()
+    {
+        // SR, SSR, UR のレートのみ抽出
+        var filteredRates = _gachaSetting.RarityRates.ToList().FindAll(r => r.rarity >= Rarity.SR);
+
+        float total = 0f;
+        foreach (var rate in filteredRates)
+        {
+            total += rate.rate;
+        }
+
+        float randomValue = UnityEngine.Random.Range(0, total);
+        float cumulative = 0f;
+
+        foreach (var rate in filteredRates)
+        {
+            cumulative += rate.rate;
+            if (randomValue <= cumulative)
+            {
+                return rate.rarity;
+            }
+        }
+
+        return Rarity.SR; // デフォルト
     }
 
     /// <summary>

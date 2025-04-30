@@ -12,8 +12,14 @@ public class GachaData : ScriptableObject
         public Rarity rarity;     // レア度
     }
 
-    // プロパティ
-    public GachaResult[] GachaResults { get; set; }
+    [SerializeField]
+    private GachaResult[] _gachaResults;
+
+    public GachaResult[] GachaResults
+    {
+        get => _gachaResults;
+        set => _gachaResults = value;
+    }
 
     // ガチャ総回数
     [SerializeField] int _totalGachaCount = 0;
