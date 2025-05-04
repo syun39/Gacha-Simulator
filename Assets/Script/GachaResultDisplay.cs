@@ -25,8 +25,8 @@ public class GachaResultDisplay : MonoBehaviour
 
     void Update()
     {
-        // エンターキーが押されたら
-        if (Input.GetKeyDown(KeyCode.Return))
+        // クリックされたら
+        if (Input.GetMouseButtonDown(0))
         {
             // 現在の画像インデックスが最後の画像のインデックスより小さい場合
             if (_currentImageIndex < _gachaData.GachaResults.Length - 1)

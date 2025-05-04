@@ -22,10 +22,13 @@ public class SceneChange : MonoBehaviour
     [Tooltip("SEが鳴ったら表示するイラスト"), Header("URシーンのみアタッチ")]
     [SerializeField] private GameObject _image = null;
 
+    [Tooltip("確定演出時に消すボタン"), Header("URシーンのみアタッチ")]
+    [SerializeField] private GameObject _skipButton = null;
+
     [Tooltip("エンターを押されたら表示するイラスト"), Header("SSRTwoシーンのみアタッチ")]
     [SerializeField] private GameObject _mikuRin = null;
 
-    // エンターキーを無効にするかどうか
+    // クリックを無効にするかどうか
     private bool _isInvalid = false;
 
     // URシーンかどうか
@@ -37,15 +40,12 @@ public class SceneChange : MonoBehaviour
     // SSRシーンかどうか
     private bool _isSSRScene = false;
 
-    // Resultシーンかどうか
-    //private bool _isResultScene = false;
-
     // 爆死シーンかどうか
-    private bool _isNormalScene = false; 
+    private bool _isNormalScene = false;
 
     private void Start()
     {
-        _isInvalid = true; // エンターキー有効
+        _isInvalid = true; // クリック有効
 
         // URシーンなら
         if (SceneManager.GetActiveScene().name == "UR Scene")
@@ -59,11 +59,7 @@ public class SceneChange : MonoBehaviour
             _mikuRin.SetActive(false);
             _isSSRTwoScene = true;
         }
-        //else if (SceneManager.GetActiveScene().name == "Result Scene") // Resultシーンなら
-        //{
-        //    _isResultScene = true;
-        //}
-        else if (SceneManager.GetActiveScene().name == "Normal Scene" || 
+        else if (SceneManager.GetActiveScene().name == "Normal Scene" ||
                  SceneManager.GetActiveScene().name == "SSR Scene")// 爆死シーンとSSRシーンなら
         {
             _isNormalScene = true;
@@ -71,15 +67,12 @@ public class SceneChange : MonoBehaviour
         }
     }
 
-    private void Update()
+    /// <summary>
+    /// クリックされたら
+    /// </summary>
+    public void OnClickScreen()
     {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            SkipScene();
-        }
-
-        // エンターキーが押されたら
-        if (_isInvalid && Input.GetKeyDown(KeyCode.Return))
+        if (_isInvalid)
         {
             if (_isURScene)
             {
@@ -89,10 +82,6 @@ public class SceneChange : MonoBehaviour
             {
                 StartCoroutine(SSRTwoChangeScene());
             }
-            //else if (_isResultScene)
-            //{
-            //    return;
-            //}
             else if (_isNormalScene)
             {
                 ChangeScene();
@@ -147,7 +136,7 @@ public class SceneChange : MonoBehaviour
     IEnumerator SSRTwoChangeScene()
     {
         _mikuRin?.SetActive(true);  // イラストを表示
-        _isInvalid = false; // エンターキーを無効
+        _isInvalid = false; // クリックを無効
         yield return new WaitForSeconds(1.7f); // 待機
         ChangeScene();
     }
@@ -162,7 +151,7 @@ public class SceneChange : MonoBehaviour
         {
             _bgmSource.Stop();
         }
-        _isInvalid = false; // エンターキーを無効
+        _isInvalid = false; // クリックを無効
 
         // 1秒待機
         yield return new WaitForSeconds(1.0f);
@@ -172,6 +161,8 @@ public class SceneChange : MonoBehaviour
         {
             _seSource.Play();
         }
+
+        _skipButton?.SetActive(false); // ボタンを非表示
 
         // イラストを表示
         _image?.SetActive(true);
