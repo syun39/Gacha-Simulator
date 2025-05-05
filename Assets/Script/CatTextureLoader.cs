@@ -157,6 +157,7 @@ public class CatTextureLoader : MonoBehaviour
                     texture = texture,
                     rarity = selectedRarity
                 };
+                _gachaData.AddGachaResult(selectedRarity); // ガチャ結果を追加
             }
             else
             {
@@ -174,7 +175,6 @@ public class CatTextureLoader : MonoBehaviour
                 // タイトルに戻る
                 SceneManager.LoadScene("Title");
             }
-            _gachaData.TotalGachaCount++; // 個別に1ずつ加算
         }
 
         _loadingText.gameObject.SetActive(false);

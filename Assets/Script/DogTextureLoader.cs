@@ -153,6 +153,7 @@ public class DogTextureLoader : MonoBehaviour
                     _changeButton.raycastTarget = true;
                     _probabilityButton.raycastTarget = true;
                 }
+                _gachaData.AddGachaResult(selectedRarity); // GachaData にレア度を追加
             }
             else
             {
@@ -172,7 +173,6 @@ public class DogTextureLoader : MonoBehaviour
                 // タイトルに戻る
                 SceneManager.LoadScene("Title");
             }
-            _gachaData.TotalGachaCount++; // 個別に1ずつ加算
         }
 
         // ガチャ結果の取得が完了

@@ -21,14 +21,31 @@ public class GachaData : ScriptableObject
         set => _gachaResults = value;
     }
 
-    // ガチャ総回数
-    [SerializeField] int _totalGachaCount = 0;
+    [SerializeField] int _totalGachaCount = 0;  // ガチャ総回数
+    [SerializeField] int _ssrCount = 0; // SSRの出現回数
+    [SerializeField] int _urCount = 0;  // URの出現回数
 
     // プロパティ
-    public int TotalGachaCount
+    public int TotalGachaCount => _totalGachaCount; // ガチャ総回数
+    public int SsrCount => _ssrCount; // SSRの出現回数
+    public int UrCount => _urCount;   // URの出現回数
+
+    /// <summary>
+    /// 引いたときにカウント追加するメソッド
+    /// </summary>
+    public void AddGachaResult(Rarity rarity)
     {
-        get => _totalGachaCount;
-        set => _totalGachaCount = value;
+        _totalGachaCount++;
+
+        switch (rarity)
+        {
+            case Rarity.SSR:
+                _ssrCount++;
+                break;
+            case Rarity.UR:
+                _urCount++;
+                break;
+        }
     }
 
     /// <summary>
@@ -37,6 +54,8 @@ public class GachaData : ScriptableObject
     public void SaveData()
     {
         PlayerPrefs.SetInt("TotalGachaCount", _totalGachaCount);
+        PlayerPrefs.SetInt("SSRCount", _ssrCount);
+        PlayerPrefs.SetInt("URCount", _urCount);
         PlayerPrefs.Save();
     }
 
@@ -46,6 +65,8 @@ public class GachaData : ScriptableObject
     public void LoadData()
     {
         _totalGachaCount = PlayerPrefs.GetInt("TotalGachaCount", 0);
+        _ssrCount = PlayerPrefs.GetInt("SSRCount", 0);
+        _urCount = PlayerPrefs.GetInt("URCount", 0);
     }
 }
 
