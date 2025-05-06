@@ -7,8 +7,8 @@ public class SceneChange : MonoBehaviour
     [Tooltip("遷移先のシーン名")]
     [SerializeField] private string _nextScene = null;
 
-    // ガチャ演出をスキップ
-    [SerializeField] private string _skipScene = null;
+    [SerializeField] private string _skipScene = null; // ガチャ演出をスキップ
+    [SerializeField] private float _waitSecond = 0.5f; // シーン遷移の待ち時間
 
     [Tooltip("BGMのAudioSource"), Header("URシーンのみアタッチ")]
     [SerializeField] private AudioSource _bgmSource = null;
@@ -37,12 +37,6 @@ public class SceneChange : MonoBehaviour
     // SSR2枚シーンかどうか
     private bool _isSSRTwoScene = false;
 
-    // SSRシーンかどうか
-    private bool _isSSRScene = false;
-
-    // 爆死シーンかどうか
-    private bool _isNormalScene = false;
-
     private void Start()
     {
         _isInvalid = true; // クリック有効
@@ -58,12 +52,6 @@ public class SceneChange : MonoBehaviour
         {
             _mikuRin.SetActive(false);
             _isSSRTwoScene = true;
-        }
-        else if (SceneManager.GetActiveScene().name == "Normal Scene" ||
-                 SceneManager.GetActiveScene().name == "SSR Scene")// 爆死シーンとSSRシーンなら
-        {
-            _isNormalScene = true;
-            _isSSRScene = true;
         }
     }
 
@@ -81,10 +69,6 @@ public class SceneChange : MonoBehaviour
             else if (_isSSRTwoScene)
             {
                 StartCoroutine(SSRTwoChangeScene());
-            }
-            else if (_isNormalScene)
-            {
-                ChangeScene();
             }
         }
     }
@@ -116,9 +100,9 @@ public class SceneChange : MonoBehaviour
     /// <summary>
     /// シーン遷移を遅らせる場合
     /// </summary>
-    public void ChangeTitleScene(string sceneName)
+    public void WaitChangeScene()
     {
-        StartCoroutine(WaitLoadScene(sceneName));
+        StartCoroutine(WaitLoadScene(_nextScene));
     }
 
     /// <summary>
@@ -126,7 +110,7 @@ public class SceneChange : MonoBehaviour
     /// </summary>
     IEnumerator WaitLoadScene(string sceneName)
     {
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(_waitSecond);
         SceneManager.LoadScene(sceneName); // シーンに遷移する
     }
 

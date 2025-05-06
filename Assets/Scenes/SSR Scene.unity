@@ -535,7 +535,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0, b: 0.06112957, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -844,10 +844,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nextScene: Gacha Main Scene
   _skipScene: Result Scene
+  _seStartButton: {fileID: 0}
   _bgmSource: {fileID: 0}
   _seSource: {fileID: 0}
   _panel: {fileID: 0}
   _image: {fileID: 0}
+  _skipButton: {fileID: 0}
   _mikuRin: {fileID: 0}
 --- !u!1 &1666539067
 GameObject:
@@ -1001,7 +1003,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1403451282}
         m_TargetAssemblyTypeName: SceneChange, Assembly-CSharp
-        m_MethodName: OnClickScreen
+        m_MethodName: ChangeScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

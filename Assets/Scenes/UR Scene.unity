@@ -536,7 +536,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: f43c183e0a5016f4ab8ba1feac3729ba, type: 3}
+  m_audioClip: {fileID: 8300000, guid: dd1a3c8d56955a74ca3b9acbb1240738, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -833,6 +833,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nextScene: Gacha Main Scene
   _skipScene: Result Scene
+  _waitSecond: 0.5
   _bgmSource: {fileID: 73622670}
   _seSource: {fileID: 845790499}
   _panel: {fileID: 902177633}

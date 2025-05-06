@@ -583,6 +583,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 441440799}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: PlayOneShot
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: e0fa5853773aaf14cab3ab27d201c987,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &346147044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -649,7 +662,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1246,7 +1259,7 @@ MonoBehaviour:
         m_MethodName: PlayOneShot
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 23a55f760d478954c88ef2774998549d,
+          m_ObjectArgument: {fileID: 8300000, guid: 87e837c39e140d14b942ea34fe556a48,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
@@ -1256,8 +1269,8 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 2051684351}
         m_TargetAssemblyTypeName: SceneChange, Assembly-CSharp
-        m_MethodName: ChangeTitleScene
-        m_Mode: 5
+        m_MethodName: WaitChangeScene
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2074,7 +2087,7 @@ MonoBehaviour:
         m_MethodName: PlayOneShot
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 23a55f760d478954c88ef2774998549d,
+          m_ObjectArgument: {fileID: 8300000, guid: e0fa5853773aaf14cab3ab27d201c987,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
@@ -2082,10 +2095,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2051684351}
+      - m_Target: {fileID: 1737325130}
         m_TargetAssemblyTypeName: SceneChange, Assembly-CSharp
-        m_MethodName: ChangeTitleScene
-        m_Mode: 5
+        m_MethodName: WaitChangeScene
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2686,6 +2699,59 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1700179798}
   m_CullTransparentMesh: 1
+--- !u!1 &1737325129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1737325131}
+  - component: {fileID: 1737325130}
+  m_Layer: 0
+  m_Name: SceneChangeSelect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1737325130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1737325129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 895646eb9bb9a9940abebe6fb09d4276, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nextScene: Gacha Select Scene
+  _skipScene: 
+  _waitSecond: 0.2
+  _bgmSource: {fileID: 0}
+  _seSource: {fileID: 0}
+  _panel: {fileID: 0}
+  _image: {fileID: 0}
+  _skipButton: {fileID: 0}
+  _mikuRin: {fileID: 0}
+--- !u!4 &1737325131
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1737325129}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1094.8848, y: 518.3456, z: 1.730742}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1794777688
 GameObject:
   m_ObjectHideFlags: 0
@@ -3009,7 +3075,7 @@ GameObject:
   - component: {fileID: 2051684352}
   - component: {fileID: 2051684351}
   m_Layer: 0
-  m_Name: SceneChange
+  m_Name: SceneChangeTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3027,8 +3093,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 895646eb9bb9a9940abebe6fb09d4276, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextScene: 
+  _nextScene: Title
   _skipScene: 
+  _waitSecond: 1
   _bgmSource: {fileID: 0}
   _seSource: {fileID: 0}
   _panel: {fileID: 0}
@@ -3061,4 +3128,5 @@ SceneRoots:
   - {fileID: 1268561760}
   - {fileID: 1602949376}
   - {fileID: 2051684352}
+  - {fileID: 1737325131}
   - {fileID: 441440800}

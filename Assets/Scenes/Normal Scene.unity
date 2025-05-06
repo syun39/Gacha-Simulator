@@ -632,10 +632,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nextScene: Gacha Main Scene
   _skipScene: Result Scene
+  _waitSecond: 0.5
   _bgmSource: {fileID: 0}
   _seSource: {fileID: 0}
   _panel: {fileID: 0}
   _image: {fileID: 0}
+  _skipButton: {fileID: 0}
   _mikuRin: {fileID: 0}
 --- !u!1 &1524128859
 GameObject:
@@ -1093,7 +1095,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1403451282}
         m_TargetAssemblyTypeName: SceneChange, Assembly-CSharp
-        m_MethodName: OnClickScreen
+        m_MethodName: ChangeScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
