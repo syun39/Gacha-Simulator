@@ -11,6 +11,9 @@ public class GachaResultDisplay : MonoBehaviour
 
     [SerializeField] Text _currentImageIndexText; // 現在の画像が何枚目かを表示するテキスト
 
+    // SE用
+    [SerializeField] AudioSource _seClick;
+
     // 現在の画像が何枚目か
     private int _currentImageIndex = 0;
 
@@ -23,22 +26,26 @@ public class GachaResultDisplay : MonoBehaviour
         }
     }
 
-    void Update()
+    /// <summary>
+    /// クリック
+    /// </summary>
+    public void Click()
     {
-        // クリックされたら
-        if (Input.GetMouseButtonDown(0))
+        if (_seClick != null && _seClick.clip)
         {
-            // 現在の画像インデックスが最後の画像のインデックスより小さい場合
-            if (_currentImageIndex < _gachaData.GachaResults.Length - 1)
-            {
-                _currentImageIndex++;
-                DisplayResult(_currentImageIndex); // 次の画像を表示
-            }
-            else
-            {
-                // すべての画像を表示したらシーン遷移
-                SceneManager.LoadScene("Result Scene");
-            }
+            _seClick.Play(); // SEを鳴らす
+        }
+
+        // 現在の画像インデックスが最後の画像のインデックスより小さい場合
+        if (_currentImageIndex < _gachaData.GachaResults.Length - 1)
+        {
+            _currentImageIndex++;
+            DisplayResult(_currentImageIndex); // 次の画像を表示
+        }
+        else
+        {
+            // すべての画像を表示したらシーン遷移
+            SceneManager.LoadScene("Result Scene");
         }
     }
 

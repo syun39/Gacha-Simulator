@@ -119,6 +119,7 @@ public class SceneChange : MonoBehaviour
     /// </summary>
     IEnumerator SSRTwoChangeScene()
     {
+        yield return new WaitForSeconds(0.7f); // 待機
         _mikuRin?.SetActive(true);  // イラストを表示
         _isInvalid = false; // クリックを無効
         yield return new WaitForSeconds(1.7f); // 待機
@@ -130,6 +131,8 @@ public class SceneChange : MonoBehaviour
     /// </summary>
     IEnumerator URChangeScene()
     {
+        yield return new WaitForSeconds(0.7f); // 待機
+
         // BGM再生中なら止める
         if (_bgmSource?.isPlaying == true)
         {
