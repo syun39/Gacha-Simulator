@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneChange : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class SceneChange : MonoBehaviour
 
     [SerializeField] private string _skipScene = null; // ガチャ演出をスキップ
     [SerializeField] private float _waitSecond = 0.5f; // シーン遷移の待ち時間
+    [SerializeField] private Button _clickButton = null; // クリックボタン
 
     [Tooltip("BGMのAudioSource"), Header("URシーンのみアタッチ")]
     [SerializeField] private AudioSource _bgmSource = null;
@@ -28,8 +30,14 @@ public class SceneChange : MonoBehaviour
     [Tooltip("エンターを押されたら表示するイラスト"), Header("SSRTwoシーンのみアタッチ")]
     [SerializeField] private GameObject _mikuRin = null;
 
-    // クリックを無効にするかどうか
-    private bool _isInvalid = false;
+    [Tooltip("スタートボタン"), Header("Titleシーンのみアタッチ")]
+    [SerializeField] private Button _startButton = null;
+
+    [Tooltip("タイトルボタン"), Header("Resultシーンのみアタッチ")]
+    [SerializeField] private Button _titleButton = null;
+
+    [Tooltip("セレクトシーンボタン"), Header("Resultシーンのみアタッチ")]
+    [SerializeField] private Button _selectSceneButton = null;
 
     // URシーンかどうか
     private bool _isURScene = false;
@@ -39,7 +47,10 @@ public class SceneChange : MonoBehaviour
 
     private void Start()
     {
-        _isInvalid = true; // クリック有効
+        if (_clickButton != null)
+        {
+            _clickButton.interactable = true; // クリック有効
+        }
 
         // URシーンなら
         if (SceneManager.GetActiveScene().name == "UR Scene")
@@ -60,8 +71,10 @@ public class SceneChange : MonoBehaviour
     /// </summary>
     public void OnClickScreen()
     {
-        if (_isInvalid)
+        if (_clickButton.interactable)
         {
+            _clickButton.interactable = false; // クリックを無効
+
             if (_isURScene)
             {
                 StartCoroutine(URChangeScene());
@@ -80,8 +93,7 @@ public class SceneChange : MonoBehaviour
     {
         if (_nextScene != null)
         {
-            // シーンに遷移する
-            SceneManager.LoadScene(_nextScene);
+            SceneManager.LoadScene(_nextScene); // シーンに遷移する
         }
     }
 
@@ -102,6 +114,22 @@ public class SceneChange : MonoBehaviour
     /// </summary>
     public void WaitChangeScene()
     {
+        if (_clickButton != null)
+        {
+            _clickButton.interactable = false; // クリックを無効
+        }
+        if (_startButton != null)
+        {
+            _startButton.interactable = false; // スタートボタンを無効
+        }
+        if (_titleButton != null)
+        {
+            _titleButton.interactable = false; // タイトルボタンを無効
+        }
+        if (_selectSceneButton != null)
+        {
+            _selectSceneButton.interactable = false; // セレクトシーンボタンを無効
+        }
         StartCoroutine(WaitLoadScene(_nextScene));
     }
 
@@ -121,7 +149,6 @@ public class SceneChange : MonoBehaviour
     {
         yield return new WaitForSeconds(0.7f); // 待機
         _mikuRin?.SetActive(true);  // イラストを表示
-        _isInvalid = false; // クリックを無効
         yield return new WaitForSeconds(1.7f); // 待機
         ChangeScene();
     }
@@ -138,7 +165,6 @@ public class SceneChange : MonoBehaviour
         {
             _bgmSource.Stop();
         }
-        _isInvalid = false; // クリックを無効
 
         // 1秒待機
         yield return new WaitForSeconds(1.0f);
