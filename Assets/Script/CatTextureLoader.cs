@@ -99,8 +99,6 @@ public class CatTextureLoader : MonoBehaviour
         // GachaData 内の結果配列を初期化
         _gachaData.GachaResults = new GachaData.GachaResult[count];
 
-
-
         for (int i = 0; i < count; i++)
         {
             Rarity selectedRarity;
@@ -111,7 +109,7 @@ public class CatTextureLoader : MonoBehaviour
             if (currentGachaCount % _ceilingCount == 0)
             {
                 selectedRarity = Rarity.UR;
-                Debug.Log("UR（天井）");
+                //Debug.Log("UR（天井）");
             }
             else if (count == 10 && i == count - 1)
             {
@@ -184,7 +182,7 @@ public class CatTextureLoader : MonoBehaviour
 
         _gachaData.SaveData(); // データを保存
 
-        Debug.Log(_gachaData.TotalGachaCount);
+        //Debug.Log(_gachaData.TotalGachaCount);
 
         // レア度のカウント
         int ssrCount = 0;
@@ -245,7 +243,7 @@ public class CatTextureLoader : MonoBehaviour
             total += rate.rate; // 各レア度の確率を合計
         }
 
-        float randomValue = UnityEngine.Random.Range(0, total); // ランダムな値を生成
+        float randomValue = Random.Range(0, total); // ランダムな値を生成
         float cumulative = 0f; // 確率の累積値を保持
 
         foreach (var rate in _gachaSetting.RarityRates)
